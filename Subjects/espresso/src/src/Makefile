@@ -157,7 +157,6 @@ maintainer-clean-compile:
 
 espresso: $(espresso_OBJECTS) $(espresso_DEPENDENCIES)
 	@rm -f espresso
-	gcc -shared -fPIC malloc.c -o libmalloc.so
 	$(LINK) $(espresso_LDFLAGS) $(espresso_OBJECTS) $(espresso_LDADD) $(LIBS) -lmalloc -L. -Wl,-rpath=.
 
 tags: TAGS

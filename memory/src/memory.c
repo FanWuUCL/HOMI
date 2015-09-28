@@ -411,11 +411,11 @@ void main(int argc, char** argv){
 	gint isStd=1;
 	gint suiteSize=0;
 	if(argc>=2){
-		CURRDIR=argv[1];
+		isStd=atoi(argv[1]);
 		if(argc>=3){
 			TESTCASEDIR=argv[2];
 			if(argc>=4){
-				isStd=atoi(argv[3]);
+				CURRDIR=argv[3];
 				if(argc>=5){
 					timeout_sec=atof(argv[4]);
 					if(argc>=6){
@@ -428,20 +428,20 @@ void main(int argc, char** argv){
 				}
 			}
 			else{
-				isStd=1;
+				CURRDIR=DEFAULT_CURR_DIR;
 				timeout_sec=TIMEOUT;
 			}
 		}
 		else{
 			TESTCASEDIR=DEFAULT_TESTCASES_DIR;
-			isStd=1;
+			CURRDIR=DEFAULT_CURR_DIR;
 			timeout_sec=TIMEOUT;
 		}
 	}
 	else{
+		isStd=1;
 		CURRDIR=DEFAULT_CURR_DIR;
 		TESTCASEDIR=DEFAULT_TESTCASES_DIR;
-		isStd=1;
 		timeout_sec=TIMEOUT;
 	}
 
