@@ -1,9 +1,13 @@
 if [ $# -lt 2 ]; then
 	echo "Invoke script followed with subject name, and whether it is the original"
-	exit 0
+	exit 2
 fi
 
 subject=$1
+
+rm -f subject
+rm -f $subject/src/$subject
+rm -f $subject/src/src/$subject
 
 cd $subject/src
 make -s >/dev/null 2>&1
@@ -11,15 +15,11 @@ cd ../../
 
 if [ -f $subject/src/$subject ]; then
 	cp $subject/src/$subject subject
-else
+elif [ -f $subject/src/src/$subject ]; then
 	cp $subject/src/src/$subject subject
-fi
-cp $subject/testcases.txt testcases.txt
-
-cp -r $subject/testcases .
-
-if [ ! -d curr ]; then
-	mkdir curr
+else
+	echo 0 0 0 1
+	exit 1
 fi
 
 ./memory $2

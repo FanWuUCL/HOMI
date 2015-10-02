@@ -1,6 +1,6 @@
 if [ $# -lt 1 ]; then
 	echo "Invoke script with a subject name"
-	exit 0
+	exit 2
 fi
 
 subject=$1
@@ -10,10 +10,18 @@ echo preparing $subject
 
 cp eval.sh chamber/eval.sh
 cp -r ../Subjects/$subject/ chamber/
+cd chamber
+cp $subject/testcases.txt testcases.txt
+cp -r $subject/testcases .
+if [ ! -d curr ]; then
+	mkdir curr
+fi
+cd ..
+
 cp ../Subjects/$subject/subjectSetting.h ../memory/src/
 cd ../memory/src
 rm -f memory
-make
+make -s
 if [ -f memory ]; then
 	cp memory $cwd/chamber/
 	cd ..
@@ -27,7 +35,7 @@ if [ -f memory ]; then
 	./eval.sh $subject 1
 else
 	echo compiling memory failed.
-	exit 0
+	exit 1
 fi
 
 cd $cwd
