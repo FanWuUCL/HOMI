@@ -9,6 +9,8 @@ cwd=`pwd`
 echo preparing $subject
 
 cp eval.sh chamber/eval.sh
+cp evalAll.sh chamber/evalAll.sh
+cp run.sh chamber/run.sh
 cp -r ../Subjects/$subject/ chamber/
 cd chamber
 cp $subject/testcases.txt testcases.txt
