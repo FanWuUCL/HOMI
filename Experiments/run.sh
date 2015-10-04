@@ -10,6 +10,8 @@ generation=$3
 #clean up
 rm -rf population*
 
+echo Initialising population
+date
 java -cp ../searchEngine.jar executable.GenerateRandom ../sensitivity/template.txt $populationSize population/
 ./evalAll.sh $subject
 mv population population0
@@ -18,8 +20,11 @@ genIndex=0
 
 while [ $genIndex -lt $generation ]; do
 	echo Generation $genIndex
+	date
 	java -cp ../searchEngine.jar executable.Evolve ../sensitivity/template.txt population$genIndex/ $populationSize population/
 	./evalAll.sh $subject
 	((genIndex=genIndex+1))
 	mv population population$genIndex
 done
+
+date

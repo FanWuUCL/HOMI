@@ -31,4 +31,3 @@ for mut in `ls population`;do
 	fi
 done
 echo -ne '\n'
-date
