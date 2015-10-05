@@ -6,13 +6,14 @@ fi
 subject=$1
 populationSize=$2
 generation=$3
+initialSize=1000
 
 #clean up
 rm -rf population*
 
 echo Initialising population
 date
-java -cp ../searchEngine.jar executable.GenerateRandom ../sensitivity/template.txt $populationSize population/
+java -cp ../searchEngine.jar executable.GenerateRandom ../sensitivity/template.txt $initialSize population/
 ./evalAll.sh $subject
 mv population population0
 
