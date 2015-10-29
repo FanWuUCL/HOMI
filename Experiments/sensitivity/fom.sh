@@ -12,7 +12,7 @@ rm -f $senFile
 while read src; do
 	echo "$src $count.c"
 	gcc -E -o $count.c ../chamber/$subject/src/$src
-	../milu -i $count.c >/dev/null 2>&1
+	../milu -i -m ../operators.txt $count.c >/dev/null 2>&1
 	if [ $? -eq 0 ]; then
 		mut=0
 		while read line; do
@@ -28,3 +28,5 @@ while read src; do
 	fi
 	((count=count+1))
 done < ../chamber/$subject/srcList.txt
+
+java -cp ../searchEngine.jar executable.AnalyseFOM sensitivity.txt template.txt
