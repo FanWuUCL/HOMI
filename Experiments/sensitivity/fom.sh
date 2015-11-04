@@ -7,12 +7,39 @@ subject=$1
 count=1
 cwd=`pwd`
 senFile="sensitivity.txt"
-rm -f $senFile
+#rm -f $senFile
 
+#echo "Configuring available operators for each src file"
+#while read src; do
+#	echo "$src $count.c"
+#	gcc -E -o $count.c ../chamber/$subject/src/$src
+#	rm -f op$count.txt
+#	while read opr; do
+#		echo $opr > operator.txt
+#		#echo $opr
+#		../milu -m operator.txt $count.c >/dev/null 2>&1
+#		if [ $? -eq 0 ]; then
+#			echo $opr >> op$count.txt
+#		fi
+#	done < ../operators.txt
+#	((count=count+1))
+#done < ../chamber/$subject/srcList.txt
+#rm -f operator.txt
+#
+count=1
+echo "Evaluating First Order Mutants"
 while read src; do
 	echo "$src $count.c"
-	gcc -E -o $count.c ../chamber/$subject/src/$src
-	../milu -i -m ../operators.txt $count.c >/dev/null 2>&1
+#	gcc -E -o $count.c ../chamber/$subject/src/$src
+#	if [ $count -le 14 ]; then
+#		((count=count+1))
+#		continue
+#	fi
+	if [ ! -f op$count.txt ]; then
+		((count=count+1))
+		continue
+	fi
+	../milu -i -m op$count.txt $count.c >/dev/null 2>&1
 	if [ $? -eq 0 ]; then
 		mut=0
 		while read line; do
@@ -30,3 +57,4 @@ while read src; do
 done < ../chamber/$subject/srcList.txt
 
 java -cp ../searchEngine.jar executable.AnalyseFOM sensitivity.txt template.txt
+
