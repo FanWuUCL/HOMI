@@ -13,7 +13,7 @@ for mut in `ls population`;do
 		while read src; do
 			if [ -f population/$mut/$srcIndex.mid.txt ]; then
 				rm -rf milu_output
-				../milu --mut-strategy=restore --mid_path population/$mut/$srcIndex.mid.txt -m ../sensitivity/op$srcIndex.txt ../sensitivity/$srcIndex.c
+				../milu --mut-strategy=restore --mid_path population/$mut/$srcIndex.mid.txt -f $subject/func$srcIndex.txt -m ../sensitivity/op$srcIndex.txt ../sensitivity/$srcIndex.c
 				if [ -f milu_output/mutants/1/src/$srcIndex.c ]; then
 					cp milu_output/mutants/1/src/$srcIndex.c $subject/src/$src
 				fi
