@@ -8,6 +8,9 @@ cwd=`pwd`
 
 echo preparing $subject
 
+if [ ! -d chamber ]; then
+	mkdir chamber
+fi
 cp eval.sh chamber/eval.sh
 cp evalAll.sh chamber/evalAll.sh
 cp run.sh chamber/run.sh
