@@ -238,7 +238,7 @@ gint profile(double* time_usr, double* time_sys, double* memory, double* correct
 	tusr=0;
 	tsys=0;
 	double tmp_double;
-	gint tmp_int, timeout;
+	gint tmp_int, timeout=1;
 	struct rusage usage;
 	struct timespec sleepUnit;
 	sleepUnit.tv_sec=0;
