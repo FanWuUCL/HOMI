@@ -58,7 +58,7 @@ NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
 CC = gcc
-MAKEINFO = /home/localadmin/Downloads/espresso-ab-1.0/missing makeinfo
+MAKEINFO = /home/localadmin/programs/HOMI/Subjects/espresso/src/missing makeinfo
 PACKAGE = espresso-ab
 VERSION = 1.0
 

@@ -10,6 +10,7 @@ rm -f $subject/src/$subject
 rm -f $subject/src/src/$subject
 
 cd $subject/src
+./configure > /dev/null 2>&1
 make -s >/dev/null 2>&1
 cd ../../
 
