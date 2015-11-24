@@ -47,4 +47,9 @@ fi
 mkdir ../data/$saveDir
 cp -r population* ../data/$saveDir/
 cp $timeFile ../data/$saveDir/$timeFile
+if [ -f curr/testResults.txt ]; then
+	cp curr/testResults.txt ../data/$saveDir/
+else if [ -f testResults.txt ]; then
+	cp testResults.txt ../data/$saveDir/
+fi
 cp ../sensitivity/template.txt ../data/$saveDir/template.txt
