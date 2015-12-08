@@ -1,0 +1,1 @@
+-DDEFPATH='".:/usr/local/share/awk"' -DDEFLIBPATH="\"/usr/local/lib/gawk\"" -DSHLIBEXT="\"so"\" -DHAVE_CONFIG_H -DGAWK -DLOCALEDIR='"/usr/local/share/locale"' -I.
