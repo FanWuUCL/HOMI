@@ -10,7 +10,9 @@ rm -f $subject/src/$subject
 rm -f $subject/src/src/$subject
 
 cd $subject/src
-#./configure > /dev/null 2>&1
+if [ -f configure ] && [ $2 -eq 1 ]; then
+	./configure > /dev/null 2>&1
+fi
 make -s >/dev/null 2>&1
 cd ../../
 
