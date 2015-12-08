@@ -10,20 +10,27 @@ senFile="sensitivity.txt"
 rm -f $senFile
 
 echo "Configuring available operators for each src file"
+cd ../chamber/$subject/src
+cflags=""
+if [ -f ../gcc_flags.txt ]; then
+	read cflags < ../gcc_flags.txt
+fi
 while read src; do
 	echo "$src $count.c"
-	gcc -E -o $count.c ../chamber/$subject/src/$src
-	rm -f op$count.txt
+	gcc $cflags -E -o $cwd/$count.c $src
+	rm -f $cwd/op$count.txt
 	while read opr; do
-		echo $opr > operator.txt
+		echo $opr > $cwd/operator.txt
 		#echo $opr
-		../milu -f ../chamber/$subject/func$count.txt -m operator.txt $count.c >/dev/null 2>&1
+		../../../milu -f ../func$count.txt -m $cwd/operator.txt $cwd/$count.c >/dev/null 2>&1
 		if [ $? -eq 0 ]; then
-			echo $opr >> op$count.txt
+			echo $opr >> $cwd/op$count.txt
 		fi
-	done < ../operators.txt
+	done < ../../../operators.txt
 	((count=count+1))
-done < ../chamber/$subject/srcList.txt
+done < ../srcList.txt
+rm -rf milu_output
+cd $cwd
 rm -f operator.txt
 #
 count=1
