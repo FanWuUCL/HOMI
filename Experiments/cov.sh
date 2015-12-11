@@ -11,7 +11,9 @@ fi
 subject=$1
 cwd=`pwd`
 srcL="srcList.txt"
+# Gcov output
 funCov="funcov.txt"
+# temp file of functions that have non-zero coverage
 funcTmp="func.txt"
 miluFuncTmp="milu_func.txt"
 
@@ -39,7 +41,6 @@ for file in `ls ./$srcDir`; do
 		done < $funCov
 		if [ $flag -eq 1 ]; then
 			count=$(($count+1))
-			echo $srcDir$file >> $srcL
 			rm -f ../func$count.txt
 			while read line; do
 				echo $line > $miluFuncTmp
@@ -47,7 +48,10 @@ for file in `ls ./$srcDir`; do
 				if [ $? -eq 0 ]; then
 					echo $line >> ../func$count.txt
 				fi
-			done
+			done < $funcTmp
+			if [ -f ../func$count.txt ]; then
+				echo $srcDir$file >> $srcL
+			fi
 			if [ -d $cwd/chamber/$subject ]; then
 				cp ../func$count.txt $cwd/chamber/$subject/func$count.txt
 			fi
