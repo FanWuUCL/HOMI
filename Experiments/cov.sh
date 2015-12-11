@@ -13,6 +13,7 @@ cwd=`pwd`
 srcL="srcList.txt"
 funCov="funcov.txt"
 funcTmp="func.txt"
+miluFuncTmp="milu_func.txt"
 
 cd ../Subjects/$subject/src/
 
@@ -39,13 +40,23 @@ for file in `ls ./$srcDir`; do
 		if [ $flag -eq 1 ]; then
 			count=$(($count+1))
 			echo $srcDir$file >> $srcL
-			cp $funcTmp ../func$count.txt
+			rm -f ../func$count.txt
+			while read line; do
+				echo $line > $miluFuncTmp
+				$cwd/milu -f $miluFuncTmp -m $cwd/operators_A.txt $file
+				if [ $? -eq 0 ]; then
+					echo $line >> ../func$count.txt
+				fi
+			done
 			if [ -d $cwd/chamber/$subject ]; then
-				cp $funcTmp $cwd/chamber/$subject/func$count.txt
+				cp ../func$count.txt $cwd/chamber/$subject/func$count.txt
 			fi
 		fi
 	fi
 done
+rm -f $miluFuncTmp
+rm -rf milu_output
+
 cp $srcL ../$srcL
 if [ -d $cwd/chamber/$subject ]; then
 	cp $srcL $cwd/chamber/$subject/$srcL
