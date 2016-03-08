@@ -1589,8 +1589,7 @@ int state[];
  *  hashval is the hash value for the dfa corresponding to the state set.
  */
 
-int *epsclosure( t, ns_addr, accset, nacc_addr, hv_addr )
-int *t, *ns_addr, accset[], *nacc_addr, *hv_addr;
+int *epsclosure( int *t, int *ns_addr, int accset[], int *nacc_addr, int *hv_addr )
 	{
 	register int stkpos, ns, tsp;
 	int numstates = *ns_addr, nacc, hashval, transsym, nfaccnum;
@@ -1755,8 +1754,10 @@ void ntod()
 	 * equivalence class) these arrays must have room for indices
 	 * from 1 to CSIZE, so their size must be CSIZE + 1.
 	 */
-	int duplist[CSIZE + 1], state[CSIZE + 1];
-	int targfreq[CSIZE + 1], targstate[CSIZE + 1];
+	int duplist[CSIZE + 1];
+	int state[CSIZE + 1];
+	int targfreq[CSIZE + 1];
+	int targstate[CSIZE + 1];
 
 	accset = allocate_integer_array( num_rules + 1 );
 	nset = allocate_integer_array( current_max_dfa_size );
@@ -2267,8 +2268,7 @@ int sns[], numstates, accset[], nacc, hashval, *newds_addr;
  *				int transsym, int nset[current_max_dfa_size] );
  */
 
-int symfollowset( ds, dsize, transsym, nset )
-int ds[], dsize, transsym, nset[];
+int symfollowset( int ds[], int dsize, int transsym, int nset[] )
 	{
 	int ns, tsp, sym, i, j, lenccl, ch, numstates, ccllist;
 
@@ -2355,11 +2355,10 @@ int ds[], dsize, transsym, nset[];
  *			int symlist[numecs], int duplist[numecs] );
  */
 
-void sympartition( ds, numstates, symlist, duplist )
-int ds[], numstates;
-int symlist[], duplist[];
+void sympartition( int ds[], int numstates, int symlist[], int duplist[] )
 	{
-	int tch, i, j, k, ns, dupfwd[CSIZE + 1], lenccl, cclp, ich;
+	int tch, i, j, k, ns, lenccl, cclp, ich;
+	int dupfwd[CSIZE + 1];
 
 	/* Partitioning is done by creating equivalence classes for those
 	 * characters which have out-transitions from the given state.  Thus
@@ -4349,7 +4348,7 @@ char *new_text;
 			/* Increase just a little, to try to avoid overflow
 			 * on 16-bit machines.
 			 */
-			action_size += action_size / 8;
+		{	action_size += action_size / 8;}
 		else
 			action_size = new_size;
 
@@ -4541,9 +4540,7 @@ register Char *str;
  *   n - number of elements of v to be sorted
  */
 
-void cshell( v, n, special_case_0 )
-Char v[];
-int n, special_case_0;
+void cshell( Char v[], int n, int special_case_0 )
 	{
 	int gap, i, j, jg;
 	Char k;
@@ -8400,7 +8397,8 @@ int state[], statenum, comstate;
 void mktemplate( state, statenum, comstate )
 int state[], statenum, comstate;
 	{
-	int i, numdiff, tmpbase, tmp[CSIZE + 1];
+	int i, numdiff, tmpbase;
+	int tmp[CSIZE + 1];
 	Char transset[CSIZE + 1];
 	int tsptr;
 
@@ -12159,7 +12157,7 @@ YY_DECL
 
 	int doing_codeblock = false;
 	int i;
-	Char nmdef[MAXLINE], myesc();
+	Char nmdef[MAXLINE];
 
 
 
@@ -12851,7 +12849,7 @@ case 106:
 YY_RULE_SETUP
 {
 			register Char *nmdefptr;
-			Char *ndlookup();
+			//Char *ndlookup();
 
 			strcpy( nmstr, yytext + 1 );
 			nmstr[yyleng - 2] = '\0';  /* chop trailing brace */
@@ -13427,7 +13425,7 @@ static int yy_get_next_buffer()
 		/* don't do the read, it's not guaranteed to return an EOF,
 		 * just force an EOF
 		 */
-		yy_current_buffer->yy_n_chars = yy_n_chars = 0;
+	{	yy_current_buffer->yy_n_chars = yy_n_chars = 0;}
 	else
 		{
 		int num_to_read =
@@ -13451,7 +13449,7 @@ static int yy_get_next_buffer()
 				int new_size = b->yy_buf_size * 2;
 
 				if ( new_size <= 0 )
-					b->yy_buf_size += b->yy_buf_size / 8;
+				{	b->yy_buf_size += b->yy_buf_size / 8;}
 				else
 					b->yy_buf_size *= 2;
 
@@ -13980,7 +13978,7 @@ int new_state;
 		new_size = yy_start_stack_depth * sizeof( int );
 
 		if ( ! yy_start_stack )
-			yy_start_stack = (int *) yy_flex_alloc( new_size );
+			{yy_start_stack = (int *) yy_flex_alloc( new_size );}
 
 		else
 			yy_start_stack = (int *) yy_flex_realloc(

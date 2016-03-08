@@ -97,7 +97,7 @@ gint cmpOutput(gchar* filename1, gchar* filename2){
 	return flag;
 }
 
-gint mycp(const char *from, const char *to)
+gint mycp_outdated(const char *from, const char *to)
 {
     int fd_to, fd_from;
     char buf[4096];
@@ -154,6 +154,14 @@ gint mycp(const char *from, const char *to)
 
     errno = saved_errno;
     return -1;
+}
+
+gint mycp(const char *from, const char *to)
+{
+	int length=strlen(from)+strlen(to)+10;
+	gchar* cmd=g_malloc(length*sizeof(gchar));
+    g_snprintf(cmd, length, "cp %s %s", from, to);
+    return system(cmd);
 }
 
 gint profile(double* time_usr, double* time_sys, double* memory, double* correctness, gint suiteSize, gint isStd){

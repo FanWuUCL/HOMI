@@ -14,8 +14,6 @@ mk1tbl
 mkentry
 mkdeftbl
 cmptmps
-scinstal
-addsym
 new_rule
 mkxtion
 mkstate
@@ -28,7 +26,6 @@ skelout
 reallocate_array
 line_directive_out
 cshell
-copy_string
 all_upper
 all_lower
 allocate_array
@@ -36,7 +33,6 @@ add_action
 action_define
 make_tables
 gentabs
-gen_start_state
 gen_NUL_trans
 gen_next_state
 gen_next_match
@@ -50,8 +46,6 @@ symfollowset
 ntod
 increase_max_dfas
 epsclosure
-readin
 flexinit
-flexend
 check_options
 main
