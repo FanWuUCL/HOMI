@@ -10,7 +10,7 @@
 // # of times a testcase should be run against for
 #define REPEAT 2
 
-#define TIMEOUT 0.3
+#define TIMEOUT 1
 
 #define DEEP_GCC_MALLOC "gcc %s -w -shared -fPIC -o %s -O3 malloc.c %s -D\'MALLOC_ALIGNMENT=((size_t)(%d*sizeof(void*)))\' -DFOOTERS=%d -DINSECURE=%d -DNO_SEGMENT_TRAVERSAL=%d -DMORECORE_CONTIGUOUS=%d -DDEFAULT_GRANULARITY=%d -DDEFAULT_TRIM_THRESHOLD=%d -DDEFAULT_MMAP_THRESHOLD=%d -DMAX_RELEASE_CHECK_RATE=%d -DSED_4425=%d -DSED_4932=%d -DSED_4334=%d -DSED_4369=%d -DSED_4941=%d -DSED_4471=%d -DSED_4297=%d -DSED_4942=%d -DSED_4470=%d"
 

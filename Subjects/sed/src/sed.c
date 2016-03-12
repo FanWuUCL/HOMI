@@ -974,7 +974,7 @@ compile_regex(b, ignore_case, nosub)
 	  printf(BAD_REGEX_FMT, last_re);
 	  exit(1);
 	}
-      regerror(error, NULL, msg, sizeof msg);
+      regerror(error, NULL, msg, sizeof(char*));
       bad_prog(msg);
   }
 
