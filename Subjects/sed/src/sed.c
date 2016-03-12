@@ -974,7 +974,7 @@ compile_regex(b, ignore_case, nosub)
 	  printf(BAD_REGEX_FMT, last_re);
 	  exit(1);
 	}
-      regerror(error, NULL, msg, sizeof(char*));
+      regerror(error, NULL, msg, sizeof(msg));
       bad_prog(msg);
   }
 
@@ -2039,10 +2039,10 @@ do_subst(sub)
       struct line tmp;
       if (start < line.length)
 	str_append(&s_accum, line.text + start, remain);
-      memcpy(VCAST(VOID *)&tmp, VCAST(VOID *)&line, sizeof line);
-      memcpy(VCAST(VOID *)&line, VCAST(VOID *)&s_accum, sizeof line);
+      memcpy(VCAST(VOID *)&tmp, VCAST(VOID *)&line, sizeof(line));
+      memcpy(VCAST(VOID *)&line, VCAST(VOID *)&s_accum, sizeof(line));
       line.chomped = tmp.chomped;
-      memcpy(VCAST(VOID *)&s_accum, VCAST(VOID *)&tmp, sizeof line);
+      memcpy(VCAST(VOID *)&s_accum, VCAST(VOID *)&tmp, sizeof(line));
       if (sub->wfile)
 	output_line(line.text, line.length, line.chomped, sub->wfile);
       if (sub->print)
@@ -2236,9 +2236,9 @@ execute_program(vec, input)
 	    case 'x':
 	      {
 		struct line temp;
-		memcpy(VCAST(VOID *)&temp, VCAST(VOID *)&line, sizeof line);
-		memcpy(VCAST(VOID *)&line, VCAST(VOID *)&hold, sizeof line);
-		memcpy(VCAST(VOID *)&hold, VCAST(VOID *)&temp, sizeof line);
+		memcpy(VCAST(VOID *)&temp, VCAST(VOID *)&line, sizeof(line));
+		memcpy(VCAST(VOID *)&line, VCAST(VOID *)&hold, sizeof(line));
+		memcpy(VCAST(VOID *)&hold, VCAST(VOID *)&temp, sizeof(line));
 	      }
 	      break;
 
@@ -2426,7 +2426,7 @@ dump_append_queue()
 	     no error condition."  IEEE Std 1003.2-1992 */
 	  if (fp)
 	    {
-	      while ((cnt = ck_fread(buf, 1, sizeof buf, fp)) > 0)
+	      while ((cnt = ck_fread(buf, 1, sizeof(buf), fp)) > 0)
 		ck_fwrite(buf, 1, cnt, stdout);
 	      fclose(fp);
 	    }
@@ -4325,7 +4325,7 @@ init_syntax_once ()
    if (done)
      return;
 
-   bzero (re_syntax_table, sizeof re_syntax_table);
+   bzero (re_syntax_table, sizeof(re_syntax_table));
 
    for (c = 'a'; c <= 'z'; c++)
      re_syntax_table[c] = Sword;
@@ -9812,13 +9812,7 @@ weak_alias (__regcomp, regcomp)
    We return 0 if we find a match and REG_NOMATCH if not.  */
 
 int
-regnexec (preg, string, len, nmatch, pmatch, eflags)
-    const regex_t *preg;
-    const char *string;
-    size_t len;
-    size_t nmatch;
-    regmatch_t pmatch[];
-    int eflags;
+regnexec (const regex_t *preg, const char *string, size_t len, size_t nmatch, regmatch_t pmatch[], int eflags)
 {
   int ret;
   struct re_registers regs;
