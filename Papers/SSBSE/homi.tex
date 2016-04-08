@@ -31,9 +31,9 @@ We find that: zeller numbers go here.
 \section{Introduction}
 \label{sec_intro}
 
-Optimising softwares for better performance such as speed and memory consumption can be demanding, especially when the resources in the running environment is limited.
-Manually optimising the performance while keeping/improving the functional behavior of a software is challenging, 
-and even harder if there are non-functional properties competing with each other~\cite{Harman:2012:GCC:2351676.2351678}.
+Optimising softwares for better performance such as speed and memory consumption can be demanded, especially when the resources in the running environment is limited.
+Manually optimising the performance while keeping or even improving the functional behavior of a software is challenging, 
+and is even harder if there are several considered properties competing with each other~\cite{Harman:2012:GCC:2351676.2351678}.
 Previous studies have applied Genetic Programming and other techniques to automate this optimisation process~\cite{6035728, geneticimprovementJP, Wu:2015:DPO:2739480.2754648}.
 
 
@@ -54,13 +54,19 @@ Previous studies have applied Genetic Programming and other techniques to automa
 In this paper, we are interested in the following Research Questions.
 
 \begin{enumerate}
-\item[RQ1] How much can mutants improve the program performance in terms of time and memory consumption?
- \begin{enumerate}
-\item[RQ1.1] First nested item
-\item[RQ1.2] Second nested item
+\item[\emph{RQ1}] Can First Order Mutants improve performance while maintaining functionality?
 \end{enumerate}
-\item[RQ2] Second item
-\item[RQ3] Third item
+
+
+
+\begin{enumerate}
+\item[\emph{RQ2}] How much can Higher Order Mutants improve the original and FOMs' performance?
+ \begin{enumerate}
+\item[\emph{RQ2.1}] How much improvement can be achieved by using traditional mutation operators?
+\item[\emph{RQ2.2}] How much improvement is accounted for by Memory Mutation Operators?
+\end{enumerate}
+\item[\emph{RQ3}] How many of the changes in improved HOMs can not be achived by patch-based GI?
+\item[\emph{RQ4}] Do Deep-Parameter-optimised library provide further improvement?
 \end{enumerate}
 
 \section{Experiment}
