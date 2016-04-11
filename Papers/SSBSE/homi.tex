@@ -314,8 +314,31 @@ All of the experiments are carried out on a desktop machine with a quad-core CPU
 \section{Threats to Validity}
 \label{sec_threat}
 
+We discuss the threats to validity in this sections, where the threats to internal validity are discussed in Section~\ref{sec_internalvalidity} and those to external validity are discussed in Section~\ref{sec_externalvalidity}.
+
+\subsection{Internal Validity}
+\label{sec_internalvalidity}
+
+\subsection{External Validity}
+\label{sec_externalvalidity}
+
 \section{Related Work}
 \label{sec_related}
+
+Langdon et al. used Genetic Programming to automatically improve existing software, where significant improvement was found~\cite{6733370,Langdon:2014:IMI:2576768.2598244}.
+Their approach is patch-based with the granularity of statements, and due to the operations of statement swapping, the optimised code is hard for human developers to understand.
+Our approach uses simple syntactic mutations to improve the code, therefore the structure of the original code is always preserved.
+Since mutations can happen at several locations in a statement, our approach works on a finer granularity.
+
+Deep Parameter Optimisation is a similar work that also used First Order Mutants for sensitivity analysis~\cite{Wu:2015:DPO:2739480.2754648}.
+After sensitivity analysis, they inserted and exposed additional parameters at most sensitive locations, which were later optimised using multi-objective search algorithm.
+Our approach follows a simpler procedure, combining FOMs to achieve better performance.
+While there requires a few manual operations for inserting Deep Parameters, our approach requires no human effort, thus is easier to apply to new subjects.
+Furthermore, since we only allow a few mutation operations on each sensitive locations, we can search for code changes that happen at many locations other than confine the changes at a small number of locations as in Deep Parameter Optimisation.
+
+Other Genetic Improvement (GI) works also consider other qualities of a software, such the correctness~\cite{6035728} or energy consumption~\cite{Bruce:2015:REC:2739480.2754752}.
+In our work, execution time and memory consumption are concerned not only because they are important qualities to many benchmark programs, but also because unlike other software qualities, they are known to compete with each other.
+Therefore, it is interesting to study the trade-off between these two software qualities.
 
 \section{Conclusion}
 \label{sec_conclusion}
