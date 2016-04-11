@@ -6,6 +6,9 @@
 \usepackage[numbers,sort]{natbib}
 \usepackage{amsmath}
 
+\renewcommand{\refname}{References}  % for the article class
+\renewcommand{\bibname}{References}  % for the report or book class
+
 \begin{document}
 
 \title{Searching Higher Order Mutation For Software Improvement}
@@ -26,10 +29,12 @@
 \maketitle
 
 \begin{abstract}
-Automation has been applied to software improvement in many ways.
-However, it suffers from the dilemma of scalability and granularity.
-We propose to use equivalent Higher Order Mutants to improve multiple non-functional properties of a software where the functional behaviour is preserved.
-We find that: zeller numbers go here.
+We propose using Higher Order Mutation for Genetic Improvement of software in this paper, where the optimisation granularity is smaller than previous works but the scalability remains.
+We use mutation tools to operate on the subjects in a fine granularity.
+Higher Order Mutants are searched for to improve the quality of the subjects, while regression tests are used to maintain the functionality.
+A prior sensitivity analysis suggests that **\% improvement on time and **\% on memory are found in First Order Mutants.
+By combining First Order Mutants, we find **\% and **\% improvement on time and memory performance respectively.
+A further static analysis suggests that, **\% of the mutational changes can not be achieved by previous patch-based approaches.
 %\keywords{Genetic Improvement \and SBSE \and Higher Order Mutation}
 \end{abstract}
 
@@ -311,6 +316,28 @@ All of the experiments are carried out on a desktop machine with a quad-core CPU
 \section{Results}
 \label{sec_result}
 
+In this section, we present the experiment results and answer the Research Questions one in each subsection.
+
+\subsection{Improvement by FOMs}
+\label{sec_resfom}
+
+Present the results from FOMs. One table.
+
+\subsection{Searching for HOMs}
+\label{sec_reshom}
+
+Present the results from HOMs. Two dimensional graph to show the Pareto fronts of HOMs and FOMs. One table and one graph.
+
+\subsection{Static Analysis}
+\label{sec_resstatic}
+
+List percentage of the mutational changes that can not be found else where in the code. One table.
+
+\subsection{Deep Parameter Optimisation}
+\label{sec_resdeep}
+
+Present the results after linking to Deep parameter optimised library. One table.
+
 \section{Threats to Validity}
 \label{sec_threat}
 
@@ -319,8 +346,34 @@ We discuss the threats to validity in this sections, where the threats to intern
 \subsection{Internal Validity}
 \label{sec_internalvalidity}
 
+We used the regression tests that come with the subjects to evaluate the correctness of mutants.
+However, passing the regression tests does not necessarily mean the semantics of the mutant is the same with the original program.
+This may pose a threat to the correctness of the optimised HOMs.
+Since the subject programs used in this paper were well tested in established works, we have confidence that the test cases are good enough to ensure most of the functionality is preserved.
+Therefore this threat is mitigated.
+
+After the sensitivity information is collected, we focus on 10\% most sensitive locations only.
+This is based on an assumption that less sensitive code is less likely to affect the performance of the program.
+However, there are still chances that the interactions between multiple less sensitive code may lead to some significant improvement.
+This possible synergy, if there is any, requires a much bigger search space, thus will make the approach much less scalable.
+In order to make the approach scalable, we confine the searching on the most sensitive locations, which makes the searching more effective.
+Furthermore, we make the ratio of sensitive locations a parameter of our approach, such that it can be adapted to trade between exploration and exploitation.
+
+Another threat to validity comes from the measurement of time and memory performance.
+To make the measurement accurate, we use CPU time and use the mean of 10 measurements to minimise the noise.
+For memory consumption, we instrument the memory management library to calculate the exact use of virtual memory.
+Therefore the measurement noise is minimised.
+
 \subsection{External Validity}
 \label{sec_externalvalidity}
+
+The approach can be easily applied to other subjects, but the conclusion may not generalise to larger scale systems.
+We use four subjects with varying sizes from 5,000 to 45,000 lines of code, and the results are consistent across all subjects.
+Therefore we have confidence that the results can be generalised to larger scale systems, and the threat is mitigated.
+
+We adopt Memory Mutation Operators in our approach because we are interested in time and memory performance.
+However, the same set of Mutation Operators does not necessarily lead to similar results when other software qualities are concerned.
+Since the selection of Mutation Operators is independent from the other parts of the approach, the set of Mutation Operators can be easily adapted accordingly, therefore, the threat is minimised.
 
 \section{Related Work}
 \label{sec_related}
@@ -342,6 +395,8 @@ Therefore, it is interesting to study the trade-off between these two software q
 
 \section{Conclusion}
 \label{sec_conclusion}
+
+Conclusion goes here.
 
 \bibliographystyle{splncs03}
 \bibliography{ref}   
