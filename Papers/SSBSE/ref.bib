@@ -75,30 +75,168 @@ language={English}
  keywords = {memory allocation, parameter exposure, parameter tuning},
 } 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+@article{Harman2001833,
+title = "Search-based software engineering ",
+journal = "Information and Software Technology ",
+volume = "43",
+number = "14",
+pages = "833 - 839",
+year = "2001",
+note = "",
+issn = "0950-5849",
+doi = "http://dx.doi.org/10.1016/S0950-5849(01)00189-6",
+url = "http://www.sciencedirect.com/science/article/pii/S0950584901001896",
+author = "Mark Harman and Bryan F Jones",
+keywords = "Software engineering",
+keywords = "Metaheuristic",
+keywords = "Genetic algorithm "
+}
 
 @incollection{arcuri-ssbse-2011,
 year={2011},
 isbn={978-3-642-23715-7},
 booktitle={Search Based Software Engineering},
+author={Arcuri, Andrea and Fraser, Gordon},
 doi={10.1007/978-3-642-23716-4_6},
 title={On Parameter Tuning in Search Based Software Engineering},
-url={http://dx.doi.org/10.1007/978-3-642-23716-4_6},
 keywords={Search based software engineering; test data generation; object-oriented; unit testing},
-author={Arcuri, Andrea and Fraser, Gordon},
+language={English},
+%url={http://dx.doi.org/10.1007/978-3-642-23716-4_6}
+}
+
+@inproceedings{Bruce:2015:REC:2739480.2754752,
+ author = {Bruce, Bobby R. and Petke, Justyna and Harman, Mark},
+ title = {Reducing Energy Consumption Using Genetic Improvement},
+ booktitle = {Proceedings of the 2015 Annual Conference on Genetic and Evolutionary Computation},
+ series = {GECCO '15},
+ year = {2015},
+ isbn = {978-1-4503-3472-3},
+ location = {Madrid, Spain},
+ pages = {1327--1334},
+ numpages = {8},
+ url = {http://doi.acm.org/10.1145/2739480.2754752},
+ doi = {10.1145/2739480.2754752},
+ acmid = {2754752},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {boolean satisfiability, energy consumption, energy efficiency, energy optimisation, genetic improvement, gi, minisat, non-functional improvement, optimisation, sat solver, sbse, search based software engineering},
+}
+
+@article{demillo1978hints,
+  title={Hints on test data selection: Help for the practicing programmer},
+  author={DeMillo, Richard A and Lipton, Richard J and Sayward, Frederick G},
+  journal={Computer},
+  number={4},
+  pages={34--41},
+  year={1978},
+  publisher={IEEE}
+}
+
+@inproceedings{Jia:2015:GIU:2739482.2768417,
+ author = {Jia, Yue and Wu, Fan and Harman, Mark and Krinke, Jens},
+ title = {Genetic Improvement Using Higher Order Mutation},
+ booktitle = {Proceedings of the Companion Publication of the 2015 Annual Conference on Genetic and Evolutionary Computation},
+ series = {GECCO Companion '15},
+ year = {2015},
+ isbn = {978-1-4503-3488-4},
+ location = {Madrid, Spain},
+ pages = {803--804},
+ numpages = {2},
+ url = {http://doi.acm.org/10.1145/2739482.2768417},
+ doi = {10.1145/2739482.2768417},
+ acmid = {2768417},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {GI, SBSE, higher order mutation},
+}
+
+@article{weimerGPEM14,
+year={2014},
+issn={1389-2576},
+journal={Genetic Programming and Evolvable Machines},
+volume={15},
+number={3},
+doi={10.1007/s10710-013-9195-8},
+title={Software mutational robustness},
+url={http://dx.doi.org/10.1007/s10710-013-9195-8},
+publisher={Springer US},
+keywords={Mutational robustness; Genetic programming; Mutation testing; Proactive diversity; N-version programming; Neutral landscapes},
+author={Schulte, Eric and Fry, ZacharyP. and Fast, Ethan and Weimer, Westley and Forrest, Stephanie},
 language={English}
+} 
+
+@article{hutter2009paramils,
+  title={Param{ILS}: an automatic algorithm configuration framework},
+  author={Hutter, Frank and Hoos, Holger H and Leyton-Brown, Kevin and St{\"u}tzle, Thomas},
+  journal={Journal of Artificial Intelligence Research},
+  volume={36},
+  number={1},
+  year={2009}
+}
+
+@inproceedings{Harman:2011:SHO:2025113.2025144,
+ author = {Harman, Mark and Jia, Yue and Langdon, William B.},
+ title = {Strong Higher Order Mutation-based Test Data Generation},
+ booktitle = {Proceedings of the 19th ACM SIGSOFT Symposium and the 13th European Conference on Foundations of Software Engineering},
+ series = {ESEC/FSE '11},
+ year = {2011},
+ isbn = {978-1-4503-0443-6},
+ location = {Szeged, Hungary},
+ pages = {212--222},
+ numpages = {11},
+}
+
+@ARTICLE{996017,
+author={Deb, K. and Pratap, A. and Agarwal, S. and Meyarivan, T.},
+journal={Evolutionary Computation, IEEE Transactions on},
+title={A fast and elitist multiobjective genetic algorithm: {NSGA-II}},
+year={2002},
+volume={6},
+number={2},
+abstract={Multi-objective evolutionary algorithms (MOEAs) that use non-dominated sorting and sharing have been criticized mainly for: (1) their O(MN3) computational complexity (where M is the number of objectives and N is the population size); (2) their non-elitism approach; and (3) the need to specify a sharing parameter. In this paper, we suggest a non-dominated sorting-based MOEA, called NSGA-II (Non-dominated Sorting Genetic Algorithm II), which alleviates all of the above three difficulties. Specifically, a fast non-dominated sorting approach with O(MN2) computational complexity is presented. Also, a selection operator is presented that creates a mating pool by combining the parent and offspring populations and selecting the best N solutions (with respect to fitness and spread). Simulation results on difficult test problems show that NSGA-II is able, for most problems, to find a much better spread of solutions and better convergence near the true Pareto-optimal front compared to the Pareto-archived evolution strategy and the strength-Pareto evolutionary algorithm - two other elitist MOEAs that pay special attention to creating a diverse Pareto-optimal front. Moreover, we modify the definition of dominance in order to solve constrained multi-objective problems efficiently. Simulation results of the constrained NSGA-II on a number of test problems, including a five-objective, seven-constraint nonlinear problem, are compared with another constrained multi-objective optimizer, and the much better performance of NSGA-II is observed},
+keywords={Pareto distribution;computational complexity;constraint theory;convergence;genetic algorithms;operations research;simulation;sorting;NSGA-II;Nondominated Sorting Genetic Algorithm II;Pareto-archived evolution strategy;Pareto-optimal front;algorithm performance;computational complexity;constrained multi-objective problems;constraint handling;convergence;dominance definition;fast elitist multi-objective genetic algorithm;mating pool;multi-criterion decision making;multi-objective evolutionary algorithm;multi-objective optimization;nondominated sharing;nonlinear problem;objectives;parent/offspring population combination;population size;selection operator;simulation;solution fitness;solution spread;strength-Pareto evolutionary algorithm;Associate members;Computational complexity;Computational modeling;Constraint optimization;Decision making;Diversity reception;Evolutionary computation;Genetic algorithms;Sorting;Testing},
+doi={10.1109/4235.996017},
+ISSN={1089-778X},
+}
+
+@INPROCEEDINGS{7107449, 
+author={J. Nanavati and F. Wu and M. Harman and Y. Jia and J. Krinke}, 
+booktitle={Software Testing, Verification and Validation Workshops (ICSTW), 2015 IEEE Eighth International Conference on}, 
+title={Mutation testing of memory-related operators}, 
+year={2015}, 
+pages={1-10}, 
+keywords={program testing;programming languages;public domain software;control flow deviation killing criteria;memory fault detection;memory mutation operators;memory-related operators;mutation testing;open source programs;programming languages;Arrays;Computational fluid dynamics;Computer languages;Fault detection;Memory management;Resource management;Testing}, 
+doi={10.1109/ICSTW.2015.7107449}, 
+month={April}}
+
+@article{Wu2016,
+title = "Memory Mutation Testing ",
+journal = "Information and Software Technology",
+year = "2016",
+note = "",
+issn = "0950-5849",
+doi = "http://dx.doi.org/10.1016/j.infsof.2016.03.002",
+url = "http://www.sciencedirect.com/science/article/pii/S0950584916300362",
+author = "Fan Wu and Jay Nanavati and Mark Harman and Yue Jia and Jens Krinke",
+keywords = "Mutation testing",
+keywords = "Memory mutation "
+}
+
+@article{Zorn:1992:EMS:142181.142200,
+ author = {Zorn, Benjamin and Grunwald, Dirk},
+ title = {Empirical Measurements of Six Allocation-intensive {C} Programs},
+ journal = {SIGPLAN Not.},
+ issue_date = {Dec. 1992},
+ volume = {27},
+ number = {12},
+ month = dec,
+ year = {1992},
+ issn = {0362-1340},
+ url = {http://doi.acm.org/10.1145/142181.142200},
+ doi = {10.1145/142181.142200},
+ acmid = {142200},
+ publisher = {ACM},
+ address = {New York, NY, USA},
 }
 
 @inproceedings{Berger:2006:DPM:1133981.1134000,
@@ -116,6 +254,40 @@ language={English}
  old_address = {New York, NY, USA},
  keywords = {DieHard, dynamic memory allocation, probabilistic memory safety, randomization, replication},
 }
+
+@article{SIR2005,
+year={2005},
+issn={1382-3256},
+journal={Empirical Software Engineering},
+volume={10},
+number={4},
+doi={10.1007/s10664-005-3861-2},
+title={Supporting Controlled Experimentation with Testing Techniques: An Infrastructure and its Potential Impact},
+url={http://dx.doi.org/10.1007/s10664-005-3861-2},
+publisher={Kluwer Academic Publishers},
+keywords={Software testing; regression testing; controlled experimentation; experiment infrastructure},
+author={Do, Hyunsook and Elbaum, Sebastian and Rothermel, Gregg},
+language={English}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @inproceedings{Berger:2002:RCM:582419.582421,
  author = {Berger, Emery D. and Zorn, Benjamin G. and McKinley, Kathryn S.},
@@ -176,34 +348,6 @@ language={English}
  old_publisher = {IEEE Computer Society Press},
  old_address = {Los Alamitos, CA, USA},
 } 
-
-@ARTICLE{996017,
-author={Deb, K. and Pratap, A. and Agarwal, S. and Meyarivan, T.},
-journal={Evolutionary Computation, IEEE Transactions on},
-title={A fast and elitist multiobjective genetic algorithm: {NSGA-II}},
-year={2002},
-volume={6},
-number={2},
-abstract={Multi-objective evolutionary algorithms (MOEAs) that use non-dominated sorting and sharing have been criticized mainly for: (1) their O(MN3) computational complexity (where M is the number of objectives and N is the population size); (2) their non-elitism approach; and (3) the need to specify a sharing parameter. In this paper, we suggest a non-dominated sorting-based MOEA, called NSGA-II (Non-dominated Sorting Genetic Algorithm II), which alleviates all of the above three difficulties. Specifically, a fast non-dominated sorting approach with O(MN2) computational complexity is presented. Also, a selection operator is presented that creates a mating pool by combining the parent and offspring populations and selecting the best N solutions (with respect to fitness and spread). Simulation results on difficult test problems show that NSGA-II is able, for most problems, to find a much better spread of solutions and better convergence near the true Pareto-optimal front compared to the Pareto-archived evolution strategy and the strength-Pareto evolutionary algorithm - two other elitist MOEAs that pay special attention to creating a diverse Pareto-optimal front. Moreover, we modify the definition of dominance in order to solve constrained multi-objective problems efficiently. Simulation results of the constrained NSGA-II on a number of test problems, including a five-objective, seven-constraint nonlinear problem, are compared with another constrained multi-objective optimizer, and the much better performance of NSGA-II is observed},
-keywords={Pareto distribution;computational complexity;constraint theory;convergence;genetic algorithms;operations research;simulation;sorting;NSGA-II;Nondominated Sorting Genetic Algorithm II;Pareto-archived evolution strategy;Pareto-optimal front;algorithm performance;computational complexity;constrained multi-objective problems;constraint handling;convergence;dominance definition;fast elitist multi-objective genetic algorithm;mating pool;multi-criterion decision making;multi-objective evolutionary algorithm;multi-objective optimization;nondominated sharing;nonlinear problem;objectives;parent/offspring population combination;population size;selection operator;simulation;solution fitness;solution spread;strength-Pareto evolutionary algorithm;Associate members;Computational complexity;Computational modeling;Constraint optimization;Decision making;Diversity reception;Evolutionary computation;Genetic algorithms;Sorting;Testing},
-doi={10.1109/4235.996017},
-ISSN={1089-778X},
-}
-
-@article{SIR2005,
-year={2005},
-issn={1382-3256},
-journal={Empirical Software Engineering},
-volume={10},
-number={4},
-doi={10.1007/s10664-005-3861-2},
-title={Supporting Controlled Experimentation with Testing Techniques: An Infrastructure and its Potential Impact},
-url={http://dx.doi.org/10.1007/s10664-005-3861-2},
-publisher={Kluwer Academic Publishers},
-keywords={Software testing; regression testing; controlled experimentation; experiment infrastructure},
-author={Do, Hyunsook and Elbaum, Sebastian and Rothermel, Gregg},
-language={English}
-}
 
 @incollection{attainment_surface:1996,
 year={1996},
@@ -269,15 +413,6 @@ month={Nov},
 abstract={Parameterized heuristics abound in computer aided design and verification, and manual tuning of the respective parameters is difficult and time-consuming. Very recent results from the artificial intelligence (AI) community suggest that this tuning process can be automated, and that doing so can lead to significant performance improvements; furthermore, automated parameter optimization can provide valuable guidance during the development of heuristic algorithms. In this paper, we study how such an AI approach can improve a state-of-the-art SAT solver for large, real-world bounded model-checking and software verification instances. The resulting, automatically-derived parameter settings yielded runtimes on average 4.5 times faster on bounded model checking instances and 500 times faster on software verification problems than extensive hand-tuning of the decision procedure. Furthermore, the availability of automatic tuning influenced the design of the solver, and the automatically-derived parameter settings provided a deeper insight into the properties of problem instances.},
 keywords={Artificial intelligence;Boosting;Encoding;Formal verification;Hardware;Heuristic algorithms;Runtime;Support vector machine classification;Support vector machines;Testing;Boolean Satisfiability;Decision Procedures;Search Parameter Optimization},
 doi={10.1109/FAMCAD.2007.9},
-}
-
-@article{hutter2009paramils,
-  title={Param{ILS}: an automatic algorithm configuration framework},
-  author={Hutter, Frank and Hoos, Holger H and Leyton-Brown, Kevin and St{\"u}tzle, Thomas},
-  journal={Journal of Artificial Intelligence Research},
-  volume={36},
-  number={1},
-  year={2009}
 }
 
 @ARTICLE{5487526,
@@ -419,22 +554,6 @@ month={Nov},
 volume={3},
 number={4},
 }
-@article{Zorn:1992:EMS:142181.142200,
- author = {Zorn, Benjamin and Grunwald, Dirk},
- title = {Empirical Measurements of Six Allocation-intensive {C} Programs},
- journal = {SIGPLAN Not.},
- issue_date = {Dec. 1992},
- volume = {27},
- number = {12},
- month = dec,
- year = {1992},
- issn = {0362-1340},
- url = {http://doi.acm.org/10.1145/142181.142200},
- doi = {10.1145/142181.142200},
- acmid = {142200},
- publisher = {ACM},
- address = {New York, NY, USA},
-}
 
 @incollection{justyna2013,
 year={2014},
@@ -445,21 +564,6 @@ title={Using Genetic Improvement and Code Transplants to Specialise a C++ Progra
 url={http://dx.doi.org/10.1007/978-3-662-44303-3_12},
 keywords={genetic improvement; code transplants; code specialisation; Boolean satisfiability},
 author={Petke, Justyna and Harman, Mark and Langdon, WilliamB. and Weimer, Westley},
-language={English}
-}
-
-@article{weimerGPEM14,
-year={2014},
-issn={1389-2576},
-journal={Genetic Programming and Evolvable Machines},
-volume={15},
-number={3},
-doi={10.1007/s10710-013-9195-8},
-title={Software mutational robustness},
-url={http://dx.doi.org/10.1007/s10710-013-9195-8},
-publisher={Springer US},
-keywords={Mutational robustness; Genetic programming; Mutation testing; Proactive diversity; N-version programming; Neutral landscapes},
-author={Schulte, Eric and Fry, ZacharyP. and Fast, Ethan and Weimer, Westley and Forrest, Stephanie},
 language={English}
 }
 
@@ -504,18 +608,6 @@ year =  2015
    booktitle = {Proceedings of the 37th International Conference on Software Engineering},
 	year = {15},
 	note = {To appear}
-}
-
-@inproceedings{Harman:2011:SHO:2025113.2025144,
- author = {Harman, Mark and Jia, Yue and Langdon, William B.},
- title = {Strong Higher Order Mutation-based Test Data Generation},
- booktitle = {Proceedings of the 19th ACM SIGSOFT Symposium and the 13th European Conference on Foundations of Software Engineering},
- series = {ESEC/FSE '11},
- year = {2011},
- isbn = {978-1-4503-0443-6},
- location = {Szeged, Hungary},
- pages = {212--222},
- numpages = {11},
 } 
 
 @incollection{babelPidgin,
