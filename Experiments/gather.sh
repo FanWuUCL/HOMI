@@ -4,18 +4,14 @@ if [ $# -lt 1 ]; then
 fi
 
 subject=$1
+rm -rf all.csv all.txt
 
 for exp in data/$1*; do
 	echo $exp
-	rm -rf $exp/all.csv
-	for generation in $exp/population*; do
-	  if [[ $generation = *population0 ]]; then
-	  	continue;
-	  fi
-	  cat $generation/newProperty.txt >> $exp/all.csv
-	  while read line; do
-	  	pos=`expr index "$line" :`
-	  	echo old ${line:$pos} >> $exp/all.csv
-	  done < $generation/oldPopulation.txt
-	done
+	rm -rf $exp/all.csv $exp/pareto.csv $exp/pareto.txt
+	java -cp ./searchEngine.jar analyse.ParetoFront $exp/
+	cat $exp/pareto.txt >> all.txt
 done
+
+java -cp ./searchEngine.jar analyse.ParetoFront all.txt
+mv pareto.txt $subject.pareto.txt
