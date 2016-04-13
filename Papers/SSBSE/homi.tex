@@ -29,13 +29,11 @@
 \maketitle
 
 \begin{abstract}
-We propose using Higher Order Mutation for Genetic Improvement of software in this paper, where the optimisation granularity is smaller than previous works but the scalability remains.
-We use mutation tools to operate on the subjects in a fine granularity.
-Higher Order Mutants are searched for to improve the quality of the subjects, while regression tests are used to maintain the functionality.
-A prior sensitivity analysis suggests that **\% improvement on time and **\% on memory are found in First Order Mutants.
-By combining First Order Mutants, we find **\% and **\% improvement on time and memory performance respectively.
-A further static analysis suggests that, **\% of the mutational changes can not be achieved by previous patch-based approaches.
-%\keywords{Genetic Improvement \and SBSE \and Higher Order Mutation}
+We propose using Higher Order Mutation for Genetic Improvement of software in this paper, in which the code modification granularity is finer than in previous work while scalability remains.
+We use Higher Order Mutation to operate on the subjects at this finer granularity, while regression tests are used to maintain the functionality.
+A preliminary sensitivity analysis suggests that up to 23\% improvement on time or 20\% on memory are found using only First Order Mutants.
+By combining these First Order Mutants to create Higher Order Mutants, we find up to 46\% improvement on the time performance.
+A further static analysis suggests that, more than half of the mutational changes can not be achieved by previous patch-based Genetic Improvement approaches.
 \end{abstract}
 
 \section{Introduction}
