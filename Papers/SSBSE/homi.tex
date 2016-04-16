@@ -5,6 +5,7 @@
 \graphicspath{{pics/}}
 \usepackage[numbers,sort]{natbib}
 \usepackage{amsmath}
+\usepackage{subfigure}
 
 \renewcommand{\refname}{References}  % for the article class
 \renewcommand{\bibname}{References}  % for the report or book class
@@ -31,9 +32,9 @@
 \begin{abstract}
 We propose using Higher Order Mutation for Genetic Improvement of software in this paper, in which the code modification granularity is finer than in previous work while scalability remains.
 We use Higher Order Mutation to operate on the subjects at this finer granularity, while regression tests are used to maintain the functionality.
-A preliminary sensitivity analysis suggests that up to 23\% improvement on time or 20\% on memory are found using only First Order Mutants.
-By combining these First Order Mutants to create Higher Order Mutants, we find up to 46\% improvement on the time performance.
-A further static analysis suggests that, more than half of the mutational changes can not be achieved by previous patch-based Genetic Improvement approaches.
+A preliminary sensitivity analysis suggests that up to 14.7\% improvement on time or 19.7\% on memory are found using only First Order Mutants.
+By combining these First Order Mutants to create Higher Order Mutants, we find up to 18.2\% improvement on the time performance.
+A further static analysis suggests that, 88\% of the mutational changes cannot be achieved by previous patch-based Genetic Improvement approaches.
 \end{abstract}
 
 \section{Introduction}
@@ -58,6 +59,7 @@ The programs with inserted faults are called `mutants', where mutants with a sin
 Although they are originally from Mutation Testing, mutants are also used in bug fixing~\cite{6035728} and sensitivity analysis~\cite{Wu:2015:DPO:2739480.2754648}.
 
 In this paper, we aim to search for Higher Order Mutants that improve the runtime performance but still preserve the functionality of the programs under optimisation~\cite{Jia:2015:GIU:2739482.2768417}.
+Therefore, by combining with Mutation Testing, we specifically utilise equivalent mutants which are expressly avoided by mutation testers where possible.
 To reduce the search space, we analyse the First Order Mutants to find those most sensitive to the property to be optimised.
 A subsequent Genetic Algorithm searches for combinations of FOMs that have better runtime performance, but only mutate the most sensitive parts of the program.
 We also conduct a static analysis to show how many of the changes in the optimised HOMs cannot be achieved by patch-based approaches.
@@ -70,14 +72,14 @@ We evaluate our approach using four open source benchmarks.
 Since the approach requires no prior knowledge about the subjects, it can be easily applied to other programs.
 
 The paper presents evidence that using Higher Order Mutation is an effective, easy to adopt way to improve existing programs. 
-The experimental results suggest that equivalent FOMs can improve the subject programs by **\% on execution time or **\% on memory consumption.
-Further results show that by searching for HOMs, we can achieve up to **\% time reduction or **\% memory reduction on extreme cases.
-Our static analysis suggests that **\% of the changes in optimised HOMs can not be achieved by patch-based approaches.
+The experimental results suggest that equivalent FOMs can improve the subject programs by 14.7\% on execution time or 19.7\% on memory consumption.
+Further results show that by searching for HOMs, we can achieve up to 18.2\% time reduction on extreme cases.
+Our static analysis suggests that 88\% of the changes in optimised HOMs cannot be achieved by patch-based approaches.
 The contributions of the paper are as follows:
 \begin{enumerate}
 \item We introduce an automatic searching process to improve subject programs via Higher Order Mutation, which is easy to adapt to other programs with different sizes.
-\item We evaluate our approach on four open source programs with varying sizes. We report the results and demonstrate that our approach is able to reduce the execution time by up to **\% or to save the memory consumption by up to **\%.
-\item The results of a static analysis are reported to show that our approach works on a smaller granularity such that **\% of the changes found by our approach can not be achieved by patch-based approaches.
+\item We evaluate our approach on four open source programs with different sizes. We report the results and demonstrate that our approach is able to reduce the execution time by up to 18.2\% or to save the memory consumption by up to 19.7\%.
+\item The results of a static analysis are reported to show that our approach works on a smaller granularity such that 88\% of the changes found by our approach cannot be achieved by patch-based approaches.
 \end{enumerate}
 
 %The rest of the paper is organised as follows. 
@@ -229,7 +231,7 @@ We answer these questions by applying search algorithm on traditional mutants al
 \end{enumerate}
 
 We ask the third research question because we want to understand whether increasing the granularity of code changes provides more improvement potential, compared to patch-based GI.
-If there are mutational changes that can not be achieved by patching, then it is likely that some improvement may never be found by patch-based approaches, thus finer granularity may help in finding better performance.
+If there are mutational changes that cannot be achieved by patching, then it is likely that some improvement may never be found by patch-based approaches, thus finer granularity may help in finding better performance.
 We answer this question by conducting a static analysis on the source code of the subjects to see whether the mutational changes can be generated from other code pieces in the program.
 
 \begin{enumerate}
@@ -272,13 +274,13 @@ Four subjects are used in our proof-of-concept experiments.
 \hline
 Name & LoC & Number of Tests & Description \\
 \hline
-espresso & 13256 & 19 & Digital circuit simplification\\
+\emph{espresso} & 13256 & 19 & Digital circuit simplification\\
 %\hline
-gawk & 45241 & 334 & String processing\\
+\emph{gawk} & 45241 & 334 & String processing\\
 %\hline
-flex & 9597 & 62 & Fast lexical analyzer generator\\
+\emph{flex} & 9597 & 62 & Fast lexical analyzer generator\\
 %\hline
-sed & 5720 & 362 & Special file editor\\
+\emph{sed} & 5720 & 362 & Special file editor\\
 \hline
 \end{tabular}%}
 \end{table}
@@ -300,8 +302,8 @@ We only mutate the functions that have non-zero coverage, since a zero-coverage 
 
 After collecting sensitivity information, there could be thousands of mutable locations in a subject, yielding an extremely large solution space.
 Therefore we pick the top 10\% most sensitive locations and only search for HOMs generated from mutating them, in which case spaces needed to store the vector representations of HOMs are reduced, as well as the search space.
-We use a relative ratio instead of an absolute number to pick sensitive locations so that the search space is fairly adapted to the size of the subject, and 10\% is based on our observation that the locations in the first 10\% are usually much more sensitive than the remaining locations.
-However, the ratio can be easily adapted accordingly.
+We use a relative ratio instead of an absolute number to pick sensitive locations so that the search space is fairly adapted to the size of the subject, and 10\% is based on our observation that the locations in the first 10\% are usually much more sensitive than the remaining locations since sensitivity seems to follow a power law, according to our informal observation.
+However, the ratio can be easily adapted as a parameter to our approach accordingly.
 
 \subsection{Search Settings}
 \label{sec_searchsetting}
@@ -312,7 +314,7 @@ There are 50 HOMs in each generation and the algorithm stops at 100th generation
 These numbers were chosen after a few trial runs to make sure the results are stable.
 
 In regards of fitness function, \emph{Glibc}'s \emph{wait} system calls are used to gather the CPU time, and we instrument the memory management library to measure the high-water mark of the memory consumption.
-The search process was repeated 30 times to cope with the nondeterministic nature of Genetic Algorithm.
+The search process was repeated 30 times to cope with the non-deterministic nature of Genetic Algorithm, and to perform influential statistical tests~\cite{STVR:STVR1486, Neumann2015}.
 All of the experiments are carried out on a desktop machine with a quad-core CPU and 7.7 GB RAM running 64-bit Ubuntu version 14.04.
 
 \section{Results}
@@ -323,17 +325,88 @@ In this section, we present the experiment results and answer the Research Quest
 \subsection{Improvement by FOMs}
 \label{sec_resfom}
 
-Present the results from FOMs. One table.
+Firstly, we evaluated the time and memory performance of those FOMs used for sensitivity analysis to answer the baseline question.
+The improvement of FOMs relative to the original is reported in Column 2 and 5 in \tablename~\ref{tab_fomhom}.
+
+\begin{table}[ht]
+\centering
+\caption{Improvement on time and memory by FOMs and HOMs. HOMs (Selective) are the HOMs using only Selective Mutation Operators.
+All Mutation Operators are used if not specified.}
+\label{tab_fomhom}
+\begin{tabular}{lrrrrrr}
+\hline
+         &      & \multicolumn{1}{c}{Time (\%)} &               &               & \multicolumn{1}{c}{Memory (\%)} &               \\
+Subject  & FOMs & HOMs (Selective)         & HOMs          & FOMs          & HOMs (Selective)           & HOMs          \\
+\hline
+\emph{espresso} & 5.2  & 6.5                      & \textbf{6.9}  & 1.6           & \textbf{1.7}               & \textbf{1.7}  \\
+\emph{gawk}     & 2.3  & 6.7                      & \textbf{9.8}  & 2.5           & 1.9                        & \textbf{4.3}  \\
+\emph{flex}     & 0.9  & \textbf{2.3}             & \textbf{2.3}  & \textbf{19.7} & \textbf{19.7}              & \textbf{19.7} \\
+\emph{sed}      & 14.7 & \textbf{18.2}            & \textbf{18.2} & \textbf{0.5}  & \textbf{0.5}               & \textbf{0.5} \\
+\hline
+\end{tabular}
+\end{table}
+
+By applying Selective and Memory Mutation Operators to generate FOMs, we find improvement on all four subjects, both on time and memory performance.
+More specifically, the execution time can be improved by up to 14.7\% (on \emph{sed}) and the improvement can be 19.7\% on memory consumption (on \emph{flex}).
+Therefore, the answer to RQ1 is, yes, FOMs alone can improve programs, with the greatest improvement of 14.7\% on time and 19.7\% on memory performance.
 
 \subsection{Searching for HOMs}
 \label{sec_reshom}
 
-Present the results from HOMs. Two dimensional graph to show the Pareto fronts of HOMs and FOMs. One table and one graph.
+Since improvement were found on FOMs, it is interesting to investigate whether we can improve the performance further by combining FOMs to form HOMs.
+We applied NSGA-II~\cite{996017} to search for better performance in HOMs using Selective Mutation Operators and using both Selective and Memory Mutation Operators respectively.
+Each Experiment was repeated for 30 times and the best time/memory performance found for each subject is reported in \tablename~\ref{tab_fomhom}.
+The results of using Selective Mutation Operators only are reported in Column 3 and 6, those using all Mutation Operators are reported in Column 4 and 7.
+By searching HOMs, the time improvement can be promoted to 18.2\%, while the memory improvement remains at 19.7\%.
+In all but two cases (memory performance on \emph{flex} and \emph{sed}), better performance was found in HOMs than the best FOMs.
+Furthermore, in three cases (time performance on \emph{espresso} and \emph{gawk}, memory performance on \emph{gawk}), including Memory Mutation Operators provides further improvement, compared with those using Selective Mutation Operators only.
+
+\begin{figure}[ht]
+	\centering
+	\subfigure[espresso]{
+		\label{fig_pareto_espresso}
+		\scalebox{1}{\includegraphics[width=0.47\textwidth]{pareto_espresso}}
+	}
+	\subfigure[gawk]{
+		\label{fig_pareto_gawk}
+		\scalebox{1}{\includegraphics[width=0.47\textwidth]{pareto_gawk}}
+	}
+	\subfigure[flex]{
+		\label{fig_pareto_flex}
+		\scalebox{1}{\includegraphics[width=0.47\textwidth]{pareto_flex}}
+	}
+	\subfigure[sed]{
+		\label{fig_pareto_sed}
+		\scalebox{1}{\includegraphics[width=0.47\textwidth]{pareto_sed}}
+	}
+	\vspace{-1em}
+	\caption{Pareto Fronts of HOMs and FOMs for each subject. Lower and lefthand solutions dominate high and righthand solutions.}\label{fig_pareto}
+\end{figure}
+
+We combine the results of 30 runs for each experiments and plot the Pareto Fronts of HOMs using all Mutation Operators, HOMs using Selective Mutation Operators and FOMs in \figurename~\ref{fig_pareto}.
+In the figure, time (x-axis) and memory (y-axis) are both normalised to the original performance.
+FOMs are plotted in yellow triangles, HOMs using Selective Mutation Operators only are represented by red squares and HOMs using all Mutation Operators are represented by blue circles.
+On all four subjects, we can see there is always improvement from FOMs to HOMs. 
+Furthermore, there is improvement when Memory Mutation Operators are included on subject \emph{espresso} and \emph{gawk}, while there is not much difference between these Pareto Fronts on the other subjects.
+To statistically demonstrate the difference, we calculated the Hypervolumes~\cite{797969} of the Pareto Front of HOMs using all Mutation Operators and those using Selective Mutation Operators over 30 runs, and applied Mann-Whitney-Wilcoxon \emph{U}-test on those Hypervolumes.
+For subject \emph{espresso} and \emph{gawk}, the difference between HOMs (all) and HOMs (Selective) are significant ($p<??$), while for the other subjects, the difference is not significant.
+
+In summary, the answer to RQ2 is, by searching for HOMs, we can improve the time performance by up to 18.2\% or the memory performance by up to 19.7\%. 
+Among the HOMs using Selective Mutation Operators only, we found the same upper bound of the improvement, but only achieved sub-optimal solutions on two subjects.
+By including Memory Mutation Operators, further improvement on these subjects were found.
+Therefore, we can conclude that Memory Mutation Operators provide further improvement potentials.
 
 \subsection{Static Analysis}
 \label{sec_resstatic}
 
-List percentage of the mutational changes that can not be found else where in the code. One table.
+To investigate whether those mutational changes can be generated from patch-based approaches, we investigated the mutants non-dominated by any other mutants in all experiments, and searched for their mutational changes in the original source code.
+We found there are 273 mutations among those mutants across all subjects.
+By appling a simple hill-climbing to clean up the mutations that do not contribute to the improvement, we narrowed down to 141 mutations.
+Among these mutations, there are in total 108 unique mutations (the same mutations may be found is several mutants).
+We then searched for these unique mutations in the original source code in the statement level.
+If a mutation does not appear somewhere else in the original source code, it cannot be generated from patch-based approaches since these approaches use the original source code as their code base to generate patches.
+The result shows that 95 (88\%) out of 108 mutations cannot be found in the original source code.
+Therefore, the answer to RQ3 is, there are 108 unique mutational changes in the improved HOMs, 88\% of which cannot be generated from patch-based approaches.
 
 \subsection{Deep Parameter Optimisation}
 \label{sec_resdeep}
@@ -395,10 +468,19 @@ Other Genetic Improvement (GI) works also consider other qualities of software, 
 In our work, execution time and memory consumption are concerned not only because they are important qualities to many benchmark programs, but also because unlike other software qualities, they are known to compete with each other.
 Therefore, it is interesting to study the trade-off between these two software qualities.
 
+Barr et al. investigated the plastic surgery hypothesis: the content of new code can often be assembled from existing code base~\cite{Barr:2014:PSH:2635868.2635898}.
+They found that 43\% of the code changes can be composed from the same software program in the line level.
+While they focused on human-written patches, we investigated how likely a machine-generated mutational change can be found somewhere else in the source code.
+Our result suggests that 88\% of those mutational changes cannot be composed from the same code base in the line level.
+
 \section{Conclusion}
 \label{sec_conclusion}
 
-Conclusion goes here.
+We use Mutation Operators to automatically modify subject programs in a finer granularity than recent patch-based approaches.
+By searching for HOMs, we find that the subject programs can be improved by 18.2\% on time performance or 19.7\% on memory consumption, while the functionality is preserved by using regression tests.
+Among those HOMs, we also find that by including Memory Mutation Operators, HOMs can achieve better performance than using just traditional Selective Mutation Operators on two subjects.
+Furthermore, we find that 88\% of the mutational changes in those improved HOMs cannot be generated from patch-based approaches.
+Therefore it motivates future Genetic Improvement studies to operate on a fine granularity. 
 
 \bibliographystyle{splncs03}
 \bibliography{ref}   
