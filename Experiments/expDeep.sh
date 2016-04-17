@@ -11,14 +11,14 @@ cp libmalloc.so libmalloc.so.bkp
 
 cp ../${subject}_malloc/libmalloc.so0 libmalloc.so
 ./evalAll.sh $subject
-cp population/newProperty.txt property.0
+cp population/newProperty.txt population/property.0
 
 cp ../${subject}_malloc/libmalloc.so1 libmalloc.so
 ./evalAll.sh $subject
-cp population/newProperty.txt property.1
+cp population/newProperty.txt population/property.1
 
 cp ../${subject}_malloc/libmalloc.so0 libmalloc.so
 ./evalAll.sh $subject
-cp population/newProperty.txt property.2
+cp population/newProperty.txt population/property.2
 
 cp libmalloc.so.bkp libmalloc.so

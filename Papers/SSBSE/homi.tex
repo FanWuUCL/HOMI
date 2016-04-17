@@ -34,7 +34,7 @@ We propose using Higher Order Mutation for Genetic Improvement of software in th
 We use Higher Order Mutation to operate on the subjects at this finer granularity, while regression tests are used to maintain the functionality.
 A preliminary sensitivity analysis suggests that up to 14.7\% improvement on time or 19.7\% on memory are found using only First Order Mutants.
 By combining these First Order Mutants to create Higher Order Mutants, we find up to 18.2\% improvement on the time performance.
-A further static analysis suggests that, 88\% of the mutational changes cannot be achieved by previous patch-based Genetic Improvement approaches.
+A further static analysis suggests that, 88\% of the mutational changes cannot be generated from previous patch-based Genetic Improvement approaches.
 \end{abstract}
 
 \section{Introduction}
@@ -53,6 +53,7 @@ To ensure scalability, patch-based approaches are usually at the `line' level of
 Therefore they are unable to `fine tune' the subject program in finer granularity. 
 Wu et al. used Deep Parameter Tuning to fine tune programs, where some internal variables were exposed and optimised, with a prior sensitivity analysis on the subject programs to ensure scalability~\cite{Wu:2015:DPO:2739480.2754648}.
 However the approach follows a complicated process where redundancy may reside in the search space.
+In this paper, we propose a more efficient approach using Higher Order Mutants.
 
 Mutation Testing~\cite{demillo1978hints,5487526} is a method to measure the quality of test cases by inserting artificial faults in the programs under test.
 The programs with inserted faults are called `mutants', where mutants with a single fault are First Order Mutants (FOM) and those with more than one fault inserted are called Higher Order Mutants (HOM)~\cite{Harman:2011:SHO:2025113.2025144}.
@@ -80,6 +81,7 @@ The contributions of the paper are as follows:
 \item We introduce an automatic searching process to improve subject programs via Higher Order Mutation, which is easy to adapt to other programs with different sizes.
 \item We evaluate our approach on four open source programs with different sizes. We report the results and demonstrate that our approach is able to reduce the execution time by up to 18.2\% or to save the memory consumption by up to 19.7\%.
 \item The results of a static analysis are reported to show that our approach works on a smaller granularity such that 88\% of the changes found by our approach cannot be achieved by patch-based approaches.
+\item By combining improved HOMs with Deep-Parameter-optimised memory management libraries, we find further improvement on four cases while it is also possible to impair the improvement.
 \end{enumerate}
 
 %The rest of the paper is organised as follows. 
@@ -389,7 +391,7 @@ FOMs are plotted in yellow triangles, HOMs using Selective Mutation Operators on
 On all four subjects, we can see there is always improvement from FOMs to HOMs. 
 Furthermore, there is improvement when Memory Mutation Operators are included on subject \emph{espresso} and \emph{gawk}, while there is not much difference between these Pareto Fronts on the other subjects.
 To statistically demonstrate the difference, we calculated the Hypervolumes~\cite{797969} of the Pareto Front of HOMs using all Mutation Operators and those using Selective Mutation Operators over 30 runs, and applied Mann-Whitney-Wilcoxon \emph{U}-test on those Hypervolumes.
-For subject \emph{espresso} and \emph{gawk}, the difference between HOMs (all) and HOMs (Selective) are significant ($p<??$), while for the other subjects, the difference is not significant.
+For subject \emph{espresso} and \emph{gawk}, the difference between HOMs (all) and HOMs (Selective) are significant ($p<0.01$), while for the other subjects, the difference is not significant.
 
 In summary, the answer to RQ2 is, by searching for HOMs, we can improve the time performance by up to 18.2\% or the memory performance by up to 19.7\%. 
 Among the HOMs using Selective Mutation Operators only, we found the same upper bound of the improvement, but only achieved sub-optimal solutions on two subjects.
@@ -411,7 +413,44 @@ Therefore, the answer to RQ3 is, there are 108 unique mutational changes in the 
 \subsection{Deep Parameter Optimisation}
 \label{sec_resdeep}
 
-Present the results after linking to Deep parameter optimised library. One table.
+In the last Research Question, we want to understand whether the improvement can be preserved or even promoted if we combine HOM-improved programs with Deep-Parameter-optimised memory management library.
+To answer this question, for each subject, we picked the most time/memory-saving HOMs and libraries, and combined them pairwise.
+The results are reported in \tablename~\ref{tab_deep}.
+In the table, rows represent HOM-improved programs and columns represent Deep-Parameter-optimised libraries, where `Original' indicates the original program or library, `T' indicates it is the most time-saving one and 'M' indicates the most memory-saving one.
+All of the numbers are the improvement in percentage compared with the original, specially, the combination of original program and original library is always 0\% improvement on either performance.
+If in a combination (that does not involve the Original program/library), the time/memory performance is not worse than that of any of the `ingredients', it is highlighted in the bold font.
+On the other hand, all the underlined performance are the ones that are worse than both of the `ingredient' program and library.
+For subject \emph{sed}, there is only one HOM on the Pareto Front, thus it is both the most time and memory-saving program.
+
+\begin{table}[ht]
+\centering
+\caption{Improvement compared with the original when HOMs are combined with Deep-Parameter-optimised libraries. Each cell reports the time improvement followed by memory improvement in percentage. `T' or `M' indicates it is most time-saving or memory-saving HOM/library.}
+\label{tab_deep}
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llrrr|llrrr}
+\hline
+                          &          & \multicolumn{3}{r|}{Memory Management Library} &                       &          & \multicolumn{3}{r}{Memory Management Library} \\
+                          &          & Original       & Deep(T)       & Deep(M)      &                       &          & Original      & Deep(T)        & Deep(M)      \\
+\hline
+\multirow{3}{*}{\rotatebox[origin=c]{90}{\emph{espresso}}} & Original & 0/0            & 0.8/0.1       & 0.7/0.2      & \multirow{3}{*}{\rotatebox[origin=c]{90}{\emph{gawk}}} & Original & 0/0           & 5.4/1.6        & -0.2/2.3     \\
+                          & HOM(T)   & 6.9/-0.2       & 4.8/\textbf{0.1}       & 4.7/\textbf{0.2}      &                       & HOM(T)   & 9.8/-0.1      & 5.6/\textbf{1.6}        & 5.4/\textbf{2.3}      \\
+                          & HOM(M)   & 6.5/1.7        & 4.7/\textbf{1.8}       & \textbf{6.7}/\textbf{1.7}      &                       & HOM(M)   & 6.1/4.3       & \underline{4.1}/\textbf{5.8}        & 4.8/\textbf{5.5}      \\
+\hline
+\multirow{3}{*}{\rotatebox[origin=c]{90}{\emph{flex}}}     & Original & 0/0            & 15.7/-2.6     & -1.1/0.6     & \multirow{3}{*}{\rotatebox[origin=c]{90}{\emph{sed}}}  & Original & 0/0           & 7.9/-1208      & 5.6/2.0      \\
+                          & HOM(T)   & 2.3/0          & 14.4/-2.6     & -Inf/-Inf    &                       & HOM(TM)   & 18.2/0.5      & \underline{5.8}/-1208      & \underline{4.1}/0.9      \\
+                          & HOM(M)   & -10.3/19.7     & -3.5/\textbf{19.7}     & -Inf/-Inf    &                       &    &             &              &           \\
+\hline
+\end{tabular}
+}
+\end{table}
+
+According to the table, there are 10 out of 28 cases (bold numbers) when combining HOM-improved program with Deep-Parameter-optimised library, the performance is at least the same as the best performance of the HOM or library it is combined from, and is strictly better on four cases.
+However, there are three cases (underlined) that the combination makes their performance worse.
+In most of the cases, the performance lies between the performance of the HOM and the library that it is combined from.
+In the case of \emph{flex}, we found that the most memory-saving library even breaks the functionality of HOMs (indicated by `-Inf' in the table).
+
+Therefore, the answer to RQ4 is, the performance of HOM-improved programs can be either promoted or jeopardised when combined with Deep-Parameter-optimised libraries, sometimes the combination may also break the functionality.
+Since there is no clear indicator of which combination is more beneficial, it motivates a future study that searches and optimises HOMs and Deep Parameters altogether.
 
 \section{Threats to Validity}
 \label{sec_threat}
@@ -481,6 +520,8 @@ By searching for HOMs, we find that the subject programs can be improved by 18.2
 Among those HOMs, we also find that by including Memory Mutation Operators, HOMs can achieve better performance than using just traditional Selective Mutation Operators on two subjects.
 Furthermore, we find that 88\% of the mutational changes in those improved HOMs cannot be generated from patch-based approaches.
 Therefore it motivates future Genetic Improvement studies to operate on a fine granularity. 
+By combining HOMs with Deep-Parameter-optimised memory management libraries, we found further improvement than HOMs or optimised libraries alone, while it is also possible to impair the runtime performance or even jeopardise the functionality of the program.
+Therefore, searching and optimising HOMs and Deep Parameters altogether can be a future direction of this study.
 
 \bibliographystyle{splncs03}
 \bibliography{ref}   
