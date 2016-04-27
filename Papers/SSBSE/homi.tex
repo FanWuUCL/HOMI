@@ -38,54 +38,54 @@ HOMI applies the NSGAII algorithm to search for higher order mutants that improv
 %We use Higher Order Mutation to operate on the subjects at this finer granularity, while regression tests are used to maintain the functionality.
 Experimental results on four real-world C programs shows
 %A preliminary sensitivity analysis suggests 
-that up to 14.7\% improvement on time or 19.7\% on memory are found using only First Order Mutants.
-By combining these First Order Mutants, HOMI found Higher Order Mutants achieve up to 18.2\% improvement on the time performance.
-A further manual analysis suggests that, 88\% of the mutation changes cannot be generated using line based `plastic surgery' Genetic Improvement approaches.
+that up to 14.7\% improvement on time and 19.7\% on memory are found using only First Order Mutants.
+By combining these First Order Mutants, HOMI found further improvement in Higher Order Mutants, giving an 18.2\% improvement on the time performance while keeping the memory improvement.
+A further manual analysis suggests that 88\% of the mutation changes cannot be generated using line based `plastic surgery' Genetic Improvement approaches.
 \end{abstract}
 
 \section{Introduction}
 \label{sec_intro}
 
 Optimising software for better performance such as speed and memory consumption can be demanding, especially when the resources in the running environment are limited.
-Manually optimising such non-functional properties while keeping or even improving the functional behaviour of a software is challenging. This becomes a even harder task if the properties considered are competing with each other~\cite{Harman:2012:GCC:2351676.2351678}. Search-Based Software Engineering (SBSE)~\cite{Harman2001833} has demonstrated many potential solutions, for example, speed up software systems \cite{5688317, Langdon:2014:IMI:2576768.2598244}, reduce memory consumption \cite{Wu:2015:DPO:2739480.2754648} and energy usage \cite{Bruce:2015:REC:2739480.2754752}.
+Manually optimising such non-functional properties while keeping or even improving the functional behaviour of software is challenging. This becomes an even harder task if the properties considered are competing with each other~\cite{Harman:2012:GCC:2351676.2351678}. Search-Based Software Engineering (SBSE)~\cite{Harman2001833} has demonstrated many potential solutions, for example, to speed up software systems \cite{5688317, Langdon:2014:IMI:2576768.2598244}, or to reduce memory consumption \cite{Wu:2015:DPO:2739480.2754648} and energy usage \cite{Bruce:2015:REC:2739480.2754752}.
 
 %Search-Based Software Engineering (SBSE)~\cite{Harman2001833} considers this optimisation problem as a search problem that can be solved by search algorithms.
 
 Previous studies have applied different search-based techniques to automate the optimisation process~\cite{arcuri-ssbse-2011, 6035728,Brake:2008:ADS:1370018.1370031,hutter2009paramils}. However, scalability of these approaches remains a challenge. To scale up and optimise real world programs, recent studies use a so-called `plastic surgery' Genetic Programming (GP) approach. To reduce the search space, it represents solutions as a list of edits to the subject program instead of the program itself~\cite{Bruce:2015:REC:2739480.2754752,geneticimprovementJP}.
-Each sequence of edits consists of inserting, deleting a piece of code, or swapping pieces of code.
-To ensure scalability, this approach usually modifies programs at the `line' level of granularity (the smallest atomic unit is a line of code). As a results, it is challenging for the `plastic surgery' to optimise subject program in finer granularity. 
+Each sequence of edits consists of inserting, deleting or swapping pieces of code.
+To ensure scalability, this approach usually modifies programs at the `line' level of granularity (the smallest atomic unit is a line of code). As a results, it is challenging for `plastic surgery' to optimise subject programs in finer granularity. 
 
 %Wu et al. used Deep Parameter Tuning to fine tune programs, where some internal variables were exposed and optimised, with a prior sensitivity analysis on the subject programs to ensure scalability~\cite{Wu:2015:DPO:2739480.2754648}.
 %However the approach follows a complicated process where redundancy may reside in the search space.
 %In this paper, we propose a more efficient approach using Higher Order Mutants.
 
-Mutation Testing~\cite{demillo1978hints,5487526} is an effective testing technique to test software. It automatically inserts artificial faults in the programs under test, to create a set of faulty programs that are called `mutants'. These mutants are used to assess the quality of tests, to provide testing criterion for generating new tests \cite{Harman:2011:SHO:2025113.2025144}, to fixing software bugs~\cite{6035728}. More recently they have also been suggested as a means to perform sensitivity analysis~\cite{Wu:2015:DPO:2739480.2754648} and to optimise software \cite{Jia:2015:GIU:2739482.2768417}.
+Mutation Testing~\cite{demillo1978hints,5487526} is an effective testing technique to test software. It automatically inserts artificial faults in the programs under test, to create a set of faulty programs that are called `mutants'. These mutants are used to assess the quality of tests, to provide testing criteria for generating new tests \cite{Harman:2011:SHO:2025113.2025144}, and to fix software bugs~\cite{6035728}. More recently they have also been suggested as a means to perform sensitivity analysis~\cite{Wu:2015:DPO:2739480.2754648} and to optimise software~\cite{Jia:2015:GIU:2739482.2768417}.
 
-We introduce the HOMI approach to improve non-functional properties of software while preserving the functionality. HOMI utilises search based higher order mutantion testing \cite{Harman:2014:AME:2642937.2643008} to effectively explore the search space of varying versions of a program. Like other previous GI work \cite{Langdon:2014:IMI:2576768.2598244, Bruce:2015:REC:2739480.2754752,geneticimprovementJP}, HOMI relies on high-quality regression tests to check the functionality of the program. Given a program $p$ and its regression tests $T$. HOMI generates two types of mutants that can be used for performance improvement. A \textbf{GI-FOM} is constructed by making a single syntactic change to $p$, which improves some non-functional properties of $p$ while passing all the regression tests $T$. Having the same characteristics as GI-FOMs, a \textbf{GI-HOM} is constructed from the combination of GI-FOMs.
+We introduce the HOMI approach to improve non-functional properties of software while preserving the functionality. HOMI utilises search-based higher order mutantion testing~\cite{Harman:2014:AME:2642937.2643008} to effectively explore the search space of varying versions of a program. Like other previous GI work \cite{Langdon:2014:IMI:2576768.2598244, Bruce:2015:REC:2739480.2754752,geneticimprovementJP}, HOMI relies on high-quality regression tests to check the functionality of the program. Given a program $p$ and its regression tests $T$. HOMI generates two types of mutants that can be used for performance improvement. A \textbf{GI-FOM} is constructed by making a single syntactic change to $p$, which improves some non-functional properties of $p$ while passing all the regression tests $T$. Having the same characteristics as GI-FOMs, a \textbf{GI-HOM} is constructed from the combination of GI-FOMs.
 
 
 %where mutants with a single fault are First Order Mutants (FOM) and those with more than one fault inserted are called Higher Order Mutants (HOM)~\cite{Harman:2011:SHO:2025113.2025144}.
 
-By combining with Mutation Testing, we specifically utilise equivalent mutants which are expressly avoided by mutation testers where possible \cite{7194639}. 
+By combining with Mutation Testing techniques, we specifically utilise equivalent mutants which are expressly avoided by mutation testers where possible~\cite{7194639}. 
 %To reduce the search space, HOMI analyses the First Order Mutants (FOMs) to find those most sensitive to the property to be optimised. A subsequent multi-objective search algorithm is used for combinations of FOMs that have better runtime performance, but only mutate the most sensitive parts of the program.
 %In this paper, we aim to search for Higher Order Mutants that improve the runtime performance but still preserve the functionality of the programs under optimisation~\cite{Jia:2015:GIU:2739482.2768417}.
 %Therefore, by combining with Mutation Testing, we specifically utilise equivalent mutants which are expressly avoided by mutation testers where possible \cite{}.
 %To reduce the search space, we analyse the First Order Mutants to find those most sensitive to the property to be optimised.
 %A subsequent Genetic Algorithm searches for combinations of FOMs that have better runtime performance, but only mutate the most sensitive parts of the program.
 %We also conduct a static analysis to show how many of the changes in the optimised HOMs cannot be achieved by patch-based approaches.
-We implemented a prototype tool to realise the HOMI approach. The tool is designed to focus on two aspects of software runtime performance, execution time and memory consumption. Time and space are important qualities for many software, especially on portable devices or embedded systems where the runtime resources are limited. Moreover, these two qualities are usually competing with each other, yielding an interesting multi-objective solution space. Our tool produces a set of non-dominated GI-HOMs (thus forming a Pareto front). We evaluate our tool using four open source benchmarks. Since the tool requires no prior knowledge about the subjects, it can be easily applied to other programs.
+We implemented a prototype tool to realise the HOMI approach. The tool is designed to focus on two aspects of software runtime performance: execution time and memory consumption. Time and space are important qualities for most software, especially on portable devices or embedded systems where the runtime resources are limited. Moreover, these two qualities are usually competing with each other, yielding an interesting multi-objective solution space. Our tool produces a set of non-dominated GI-HOMs (thus forming a Pareto front). We evaluate our tool using four open source benchmarks. Since the tool requires no prior knowledge about the subjects, it can be easily applied to other programs.
 
 The paper presents evidence that using Higher Order Mutation is an effective, easy to adopt way to improve existing programs. 
-The experimental results suggest that equivalent FOMs can improve the subject programs by 14.7\% on execution time or 19.7\% on memory consumption.
+The experimental results suggest that equivalent First Order Mutants (FOMs) can improve the subject programs by 14.7\% on execution time or 19.7\% on memory consumption.
 Further results show that by searching for GI-HOMs, we can achieve up to 18.2\% time reduction on extreme cases.
 Our static analysis suggests that 88\% of the changes in GI-HOMs cannot be achieved by `plastic surgery' based approaches.
 The contributions of the paper are as follows:
 \begin{enumerate}
-\item We introduce an automatic approach to improve programs via Higher Order Mutation, which explore program search space at a fine granularity while maintaining good scalability.
+\item We introduce an automatic approach to improve programs via Higher Order Mutation, which explores program search space at a fine granularity while maintaining good scalability.
 %which is easy to adapt to other programs with different sizes.
 \item We evaluate our approach on four open source programs with different sizes. We report the results and demonstrate that our approach is able to reduce the execution time by up to 18.2\% or to save the memory consumption by up to 19.7\%.
-\item The results of a manual analysis are reported to show that our approach works on a smaller granularity such that 88\% of the changes found by our approach cannot be achieved by a line based `plastic surgery' approaches.
-\item We also show evidence that it is possible to combine the HOMI approach with Deep-Parameter-optimisation approach to further improve the performance on four cases. 
+\item The results of a manual analysis are reported to show that our approach works on a smaller granularity, such that 88\% of the changes found by our approach cannot be achieved by line based `plastic surgery' approaches.
+\item We also show evidence that it is possible to combine the HOMI approach with Deep-Parameter-optimisation approach to further improve the performance. 
 
 \end{enumerate}
 
@@ -102,7 +102,7 @@ The contributions of the paper are as follows:
 \section{The HOMI approach}
 \label{sec_method}
 
-We propose the HOMI approach, a higher order mutation based solution to GI. \figurename~\ref{fig_framework} shows the overall architecture of the HOMI approach. Given a subject program with a set of regression tests, and some optimisation goals, HOMI applies SBSE to evolve a set of GI-HOMs that improve the properties of interest while passing all the regression tests.  To explore the search space efficiently, we follow the current practice of GI in separating our approach into two stages \cite{6733370}. In the first stage, we apply first order mutation to find locations in the program at which making changes will lead to significant impact on the optimisation goals. In the second stage, we apply a multi-objective search algorithm at these program locations to construct a Pareto front of GI-HOMs. 
+We propose the HOMI approach, a higher order mutation based solution to GI. \figurename~\ref{fig_framework} shows the overall architecture of the HOMI approach. Given a subject program with a set of regression tests, and some optimisation goals, HOMI applies SBSE to evolve a set of GI-HOMs that improve the properties of interest while passing all the regression tests.  To explore the search space efficiently, we follow the current practice of GI in separating our approach into two stages~\cite{6733370}. In the first stage, we apply first order mutation to find locations in the program at which making changes will lead to significant impact on the optimisation goals. In the second stage, we apply a multi-objective search algorithm at these program locations to construct a Pareto front of GI-HOMs. 
 
 %Our approach can be divided into two steps: sensitivity analysis and searching for Higher Order Mutants.
 %The whole process is illustrated in \figurename~\ref{fig_framework}.
@@ -127,7 +127,7 @@ We propose the HOMI approach, a higher order mutation based solution to GI. \fig
 \subsection{Stage I: Sensitivity Analysis}
 \label{sec_sensitivity}
 
-Sensitivity analysis has been shown to be an effective way to reduce the search space in previous GI work~\cite{6733370,Bruce:2015:REC:2739480.2754752,6035728}. Given a subject program under optimisation, some code pieces may have a greater impact on the properties of interest than others. Sensitivity analysis seeks to find small portions of code that have the greatest impact on the properties of interest. Thus, the subsequent optimisation  can focus on a manageable amount of code, effectively reducing the search space. We use a first order mutation based sensitivity analysis approach to gather sensitivity information; this approach was introduced by Wu et al.~\cite{Wu:2015:DPO:2739480.2754648}. We use this form of sensitivity analysis because it provides finer granularity than traditional statement or line based sensitivity analysis.  
+Sensitivity analysis has been shown to be an effective way to reduce the search space in previous GI work~\cite{6733370,Bruce:2015:REC:2739480.2754752,6035728}. Given a subject program under optimisation, some code pieces may have a greater impact on the properties of interest than others. Sensitivity analysis seeks to find small portions of code that have the greatest impact on the properties of interest. Thus, the subsequent optimisation  can focus on a manageable amount of code, effectively reducing the search space. We use a first order mutation based sensitivity analysis approach to gather sensitivity information; this approach was introduced by Wu et al.~\cite{Wu:2015:DPO:2739480.2754648}. We use this form of sensitivity analysis because it provides finer granularity than traditional statement or line-based sensitivity analysis.  
 
 
 %% these will move to the background
@@ -156,18 +156,18 @@ The sensitivity analysis stage outputs a set of GI-FOMs. These FOMs are ``potent
 \subsection{Stage II: Searching for GI-HOMs}
 \label{sec_hom}
 
-In the second stage, HOMI applies a multi-objective algorithm to search for a set of improved versions of the original program in the form of HOMs. We use an integer vector to represent HOMs, which is a commonly used data representation in search based Higher Order Mutation Testing \cite{Jia20091379}. Each integer value in the vector encodes whether a mutable symbol is mutated and how it is mutated. For example, given a mutant generated from the arithmetic operator `\texttt{+}',  a negative integer value means it is not mutated while the integer $0$, $1$, $2$, $3$ indicate that the code is mutated to `\texttt{-}', `\texttt{*}', `\texttt{/}', `\texttt{\%}' respectively.  In this way, each FOM is represented as a vector with only one non-negative number and HOMs can be easily constructed by the standard crossover and mutation search operators. 
+In the second stage, HOMI applies a multi-objective algorithm to search for a set of improved versions of the original program in the form of HOMs. We use an integer vector to represent HOMs, which is a commonly used data representation in search-based Higher Order Mutation Testing~\cite{Jia20091379}. Each integer value in the vector encodes whether a mutable symbol is mutated and how it is mutated. For example, given a mutant generated from the arithmetic operator `\texttt{+}',  a negative integer value means it is not mutated while the integer $0$, $1$, $2$, $3$ indicate that the code is mutated to `\texttt{-}', `\texttt{*}', `\texttt{/}', `\texttt{\%}' respectively.  In this way, each FOM is represented as a vector with only one non-negative number and HOMs can be easily constructed by the standard crossover and mutation search operators. 
 
 %Therefore, combining these FOMs may generate HOMs that inherit the strengths of the FOMs that they are generated from, and yield better performance than any FOM alone.
 %Selecting FOMs to form HOMs is a multi-objective search problem, thus we apply NSGA-II~\cite{996017} to search for HOMs with better performance.
 
 
-The algorithm takes the GI-FOMs as input and repeatedly evolves HOMs that inherit the strengths of the GI-FOMs from which they are constructed and yield better performance than any GI-FOMs alone. The fitness function that guides the search is defined as the sum of the measurement of each optimisation property over a given test suite. Given a set of N optimisation goals, for each mutant $M$, the fitness function $f_n(M)$ for the nth optimisation goal is formulated as follow:
+The algorithm takes the GI-FOMs as input and repeatedly evolves HOMs that inherit the strengths of the GI-FOMs from which they are constructed and yield better performance than any GI-FOMs alone. The fitness function that guides the search is defined as the sum of the measurement of each optimisation property over a given test suite. Given a set of N optimisation goals, for each mutant $M$, the fitness function $f_n(M)$ for the $n$th optimisation goal is formulated as follow:
 
-$$ Minimisation ~~~~f_n(M)=
+$$ \textit{Minimisation} ~~~~f_n(M)=
 \begin{cases}
     \sum C_i(M)      & \quad \text{if } M \text{ passes all test cases}\\
-    C_{MAX}  & \quad \text{if } M \text{ fails any test case}\\
+    C_{\mathrm{MAX}}  & \quad \text{if } M \text{ fails any test case}\\
 \end{cases}
 $$
 
@@ -180,7 +180,7 @@ $$
 %\end{cases}
 %$$
 
-The fitness function is a minimisation function where $C_i(M)$ is the measurement of the optimisation goal $n$ when executing the test $i$. If the mutant $M$ fails any regression tests, we consider it as a bad candidate and assign it with the worst fitness values $C_{MAX}$. The algorithm produces a Pareto front of GI-HOMs. Each HOM on the front represents a modified version of the original program that passes all the regression tests while no property of interest can be further improved without compromising at least one other optimising goal.
+The fitness function is a minimisation function where $C_i(M)$ is the measurement of the optimisation goal $n$ when executing the test $i$. If the mutant $M$ fails any regression tests, we consider it as a bad candidate and assign it with the worst fitness values $C_{\mathrm{MAX}}$. The algorithm produces a Pareto front of GI-HOMs. Each HOM on the front represents a modified version of the original program that passes all the regression tests while no property of interest can be further improved without compromising at least one other optimising goal.
 
 %
 %where $t_i(M)$ is the time consumption of $M$ on the $i$th test case, and $m_i(M)$ is the `high-water mark' for virtual memory consumption.
@@ -192,7 +192,7 @@ The fitness function is a minimisation function where $C_i(M)$ is the measuremen
 We implemented a prototype tool to realise the HOMI approach. The HOMI tool is designed to optimise two non-functional properties (running time and memory consumption) for C programs.
 In the fitness evaluation harness, we use \emph{Glibc}'s \emph{wait} system calls to gather the CPU time, and we instrument the memory management library to measure the `high-water' mark of the memory consumption. We choose to measure virtual instead of physical memory consumption because the physical memory consumption is non-deterministic. This means it depends on the workload of the machine. By contrast, the virtual memory used is always an upper bound of the physical memory actually used.
 
-HOMI uses the open source C mutation testing tool, Milu \cite{JiaH08a} to generate mutants. We chose Milu because it features search based higher order mutation and can be used as an external mutant generator. By default, Milu supports only the traditional C mutation operators \cite{AgrawalDHHHKMMS89}. As memory consumption is one of the optimisation goals, we extended the original version of Milu to support Memory Mutation Operators proposed by Nanavati et al.~\cite{7107449}. \tablename~\ref{tab_mutationoperator} lists the Mutation Operators used in HOMI and their brief descriptions. During the search stage, HOMI transforms the internal integer vector representation of the candidate HOM to the data format recognisable by Milu, then invokes Milu to generate the HOM.
+HOMI uses the open source C mutation testing tool, Milu~\cite{JiaH08a} to generate mutants. We chose Milu because it features search-based higher order mutation and can be used as an external mutant generator. By default, Milu supports only the traditional C mutation operators~\cite{AgrawalDHHHKMMS89}. As memory consumption is one of the optimisation goals, we extended the original version of Milu to support Memory Mutation Operators proposed by Nanavati et al.~\cite{7107449}. \tablename~\ref{tab_mutationoperator} lists the Mutation Operators used in HOMI and their brief descriptions. During the search stage, HOMI transforms the internal integer vector representation of the candidate HOM to the data format recognisable by Milu, then invokes Milu to generate the HOM.
 \vspace{-5mm}
 \begin{table}[ht]
 \caption{Mutation Operators used by HOMI}
@@ -270,19 +270,19 @@ If GI-FOMs alone can improve performance, we expect that GI-HOMs will inherit so
 \noindent\textbf{RQ 2.1 How does the improvement achieved by applying the traditional mutation operators only compare to applying both of the traditional and memory mutation operators? }
 \vspace{2mm}
 
-We answer this question by comparing the HyperVolume quality indicator of the Pareto fronts generated from HOMI using both sets of mutation operators. Given a Pareto front A and a reference Pareto front R, HyperVolume is the volume of objective space dominated by solutions in A. To take into account the stochastic nature of the search algorithms, we repeat both experiments 30 times. We use the non-parametric Wilcoxon-signed rank tests to assess the statistical significance of the HyperVolume and Vargha-Delaney effect size to further assess the magnitude of the differences \cite{STVR:STVR1486, Neumann2015}. 
+We answer this question by comparing the HyperVolume quality indicator of the Pareto fronts generated from HOMI using both sets of mutation operators. Given a Pareto front A and a reference Pareto front R, HyperVolume is the volume of objective space dominated by solutions in A. To take into account the stochastic nature of the search algorithms, we repeat both experiments 30 times. We use the non-parametric Mann-Whitney-Wilcoxon-signed rank tests to assess the statistical significance of the HyperVolume and untransformed~\cite{Neumann2015} Vargha-Delaney effect size to further assess the magnitude of the differences~\cite{STVR:STVR1486}. 
 
 \vspace{2mm}
 \noindent\textbf{RQ3: Can `plastic surgery' GP based GI approach find edit sequences to construct the GI-HOMs found by HOMI?}
 \vspace{2mm}
 
-We ask this question because we want to understand whether the granularity of mutation changes can be produced by the  `plastic surgery' GP approach. The  `plastic surgery' GP approach is a popular GI approach which searches for a list of edits from the existing source code. Typical changes generated by the GP approach are movements or replacements of different lines of code \cite{justyna2013, 6733370}. To answer this question, we carried out a sanity-check experiment manually using all the GI-HOMs found. For each GI-HOM, we search the entire program to see if the mutated statement exists in the program. If it does, the GI-HOM can be constructed by the patches generated from the GP approach easily. Otherwise, we consider the line/statement based `plastic surgery' GP might not able to generate the GI-HOM directly. 
+We ask this question because we want to understand whether the granularity of mutation changes can be produced by the `plastic surgery' GP approach. The `plastic surgery' GP approach is a popular GI approach which searches for a list of edits from the existing source code. Typical changes generated by the GP approach are movements or replacements of different lines of code~\cite{justyna2013, 6733370}. To answer this question, we carried out a sanity-check experiment manually using all the GI-HOMs found. For each GI-HOM, we search the entire program to see if the mutated statement exists in the program. If it does, the GI-HOM can be constructed by the patches generated from the GP approach easily. Otherwise, we consider the line/statement based `plastic surgery' GP might not able to generate the GI-HOM directly. 
 
 \vspace{2mm}
 \noindent\textbf{RQ4 Can HOMI be combined with Deep Parameter Optimisation to achieve further improvement?}
 \vspace{2mm}
 
-Finally, we want to investigate whether the HOMI approach can be combined with other types of GI techniques. Deep Parameter Optimisation is one of the state-of-the-art parameter tuning based GI techniques. It seeks to optimise library code used instead of the source code of the subjects \cite{Wu:2015:DPO:2739480.2754648}. We have contacted the authors of the Deep Parameter Optimisation work to provide a set of memory allocation libraries that were optimised for the time and memory performance for each subject. We answer this research question by evaluating the GI-HOMs after linking them to Deep-Parameter-optimised libraries, then comparing them with their performance before the linking, and with the performance of the original program after linking to Deep-Parameter-optimised libraries.
+Finally, we want to investigate whether the HOMI approach can be combined with other types of GI techniques. Deep Parameter Optimisation is one of the state-of-the-art parameter tuning based GI techniques. It seeks to optimise library code used instead of the source code of the subjects~\cite{Wu:2015:DPO:2739480.2754648}. We have contacted the authors of the Deep Parameter Optimisation work to provide a set of memory allocation libraries that were optimised for the time and memory performance for each subject. We answer this research question by evaluating the GI-HOMs after linking them to Deep-Parameter-optimised libraries, then comparing them with their performance before the linking, and with the performance of the original program after linking to Deep-Parameter-optimised libraries.
 
 
 
@@ -337,7 +337,7 @@ Finally, we want to investigate whether the HOMI approach can be combined with o
 \subsection{Subject programs and tests}
 \label{sec_subject}
 
-We optimise four subjects in our proof-of-concept evaluation. 
+We optimise four subjects in our evaluation. 
 \tablename~\ref{tab_subject} lists the subjects and their brief description. All tests used are regression tests, deemed to be useful and practical by their developers.
 \emph{Espresso} is a fast application for simplifying complex digital electronic gate circuits.
 \emph{Gawk} is the GNU \emph{awk} implementation for string processing.
@@ -385,10 +385,10 @@ Name & LoC & \# of Tests & Description \\
 \label{sec_searchsetting}
 
 
-In the sensitivity analysis stage, we pick the top 10\% most sensitive locations of GI-FOMs and only search for GI-HOMs from these locations. We use a relative ratio instead of an absolute number because the search space can be fairly adapted to the size of the subject. The choice of 10\% is based on our observation that the locations in the first 10\% are usually much more sensitive than the remaining locations since sensitivity seems to follow a power law, according to our informal observation. However, the ratio can be easily adapted as a parameter to our approach accordingly.
+In the sensitivity analysis stage, we pick the top 10\% most sensitive locations of the GI-FOMs and only search for GI-HOMs from these locations. We use a relative ratio instead of an absolute number because the search space can be adapted to the size of the subject. The choice of 10\% is based on our observation that the locations in the first 10\% are usually much more sensitive than the remaining locations since sensitivity seems to follow a power law, according to our informal observation. However, the ratio can be easily adapted as a parameter to our approach accordingly.
 
 
-We repeat all HOMI experiments 30 times to cope with the non-deterministic nature of NSGAII. The NSGAII performs a tournament selection of size 2 and uniform crossover with a probability of 0.8. There are 50 HOMs in each generation and the algorithm stops at 100th generation. These numbers were chosen after initial calibration experimentation to determine suitable parameters for our search process. All of the experiments are carried out on a desktop machine with a quad-core CPU and 7.7 GB RAM running 64-bit Ubuntu version 14.04.
+We repeat all HOMI experiments 30 times to cope with the non-deterministic nature of NSGAII and to facilitate inferential statistical analysis. The NSGAII performs a tournament selection of size 2 and uniform crossover with a probability of 0.8. There are 50 HOMs in each generation and the algorithm stops at 100th generation. These numbers were chosen after initial calibration experimentation to determine suitable parameters for our search process. All of the experiments are carried out on a desktop machine with a quad-core CPU and 7.7 GB RAM running 64-bit Ubuntu version 14.04.
 
 
 %
@@ -421,7 +421,7 @@ We repeat all HOMI experiments 30 times to cope with the non-deterministic natur
 \subsection{Improvement by GI-FOMs}
 \label{sec_resfom}
 
-We begin by looking at the time and memory performance of the GI-FOMs generated from the sensitivity analysis stage to answer the RQ1. We calculated the improvement of GI-FOMs relative to the original program, and reported them in Column 2 and 5 in \tablename~\ref{tab_fomhom}. These measures are averaged from 10 repeated runs. By applying selective and memory mutation operators to generate FOMs, we found the improved versions of all four subjects, both on time and memory performance. More specifically, the improvement ranges from 0.9\% to 14.7\% on time and from 0.5\% to 19.7\% on memory performance.  
+We begin by looking at the time and memory performance of the GI-FOMs generated from the sensitivity analysis stage to answer the RQ1. We calculated the improvement of GI-FOMs relative to the original program, and reported them in Columns 2 and 5 in \tablename~\ref{tab_fomhom}. These values are averaged from 10 repeated evaluations. By applying selective and memory mutation operators to generate FOMs, we found the improved versions of all four subjects, both on time and memory performance. More specifically, the improvement ranges from 0.9\% to 14.7\% on time and from 0.5\% to 19.7\% on memory performance.  
 However, there might be a large gap between the memory and time improvement for some subject, for example, the GI-FOM of \emph{sed} can run up to  14.7\%  faster to only save 0.5\% memory. We conclude that even with the simplest changes introduced by first order mutation, the HOMI approach is able to improve the execution time and memory consumption. 
 
 %Firstly, we evaluated the time and memory performance of those FOMs used for sensitivity analysis to answer the baseline question.
@@ -459,7 +459,7 @@ Subject  & GI-FOMs & \homss{}         & \homsa{}          & GI-FOMs          & \
 \end{table}
 
 
-The results of \homss{} are reported in Column 3 and 6, and those of \homsa{} are reported in Column 4 and 7. We immediately observe that GI-HOMs achieve greater improvement than GI-FOMs on execution time for all subjects, also on memory consumption for two out of four subjects. The greatest time improvement found by GI-HOMs can be promoted to 18.2\%, while the improvement can be up to four times better (on \emph{gawk}) than the improvement yielded from GI-FOMs. We also observe one case {\emph{gawk}), on which the \homss{} achieve less memory improvement compared with GI-FOMs, because they are lack of some memory-related changes that can only be achieved by Memory Mutation Operators. 
+The results of \homss{} are reported in Columns 3 and 6, and those of \homsa{} are reported in Columns 4 and 7. We immediately observe that GI-HOMs achieve greater improvement than GI-FOMs on execution time for all subjects, also on memory consumption for two out of four subjects. The greatest time improvement found by GI-HOMs can be promoted to 18.2\%, while the improvement can be up to four times better (on \emph{gawk}) than the improvement yielded from GI-FOMs. We also observe one case {\emph{gawk}), on which the \homss{} achieve less memory improvement compared with GI-FOMs, because they are lack of some memory-related changes that can only be achieved by Memory Mutation Operators. 
 
 %By searching HOMs, the greatest time improvement can be promoted to 18.2\%, while the improvement can be up to four times of the improvement provided by FOMs.
 %%In all but two cases (memory performance on \emph{flex} and \emph{sed}), better performance was found in HOMs than the best FOMs.
@@ -467,12 +467,12 @@ The results of \homss{} are reported in Column 3 and 6, and those of \homsa{} ar
 
 
 
-We combine the results of 30 runs for each experiment and plot the Pareto Fronts of GI-HOMs using all Mutation Operators, GI-HOMs using Selective Mutation Operators and GI-FOMs in \figurename~\ref{fig_pareto}.
+We combine the results of 30 runs for each experiment and plot the Pareto fronts of GI-HOMs using all Mutation Operators, GI-HOMs using Selective Mutation Operators and GI-FOMs in \figurename~\ref{fig_pareto}.
 In the figure, time (x-axis) and memory (y-axis) are both normalised to the original performance.
 %FOMs are plotted in yellow triangles, HOMs using Selective Mutation %Operators only are represented by red squares and HOMs using all %Mutation Operators are represented by blue circles.
 On all four subjects, we can see there is always an improvement from GI-FOMs to GI-HOMs, while the differences between \homss{} and \homsa{} are less clear. 
-%Furthermore, there is an improvement when Memory Mutation Operators %are included on subject \emph{espresso} and \emph{gawk}, while %there is not much difference between these Pareto Fronts on the other %subjects.
-To statistically demonstrate the difference, we calculated the HyperVolume~\cite{797969} of the Pareto Front of GI-HOMs using all Mutation Operators and those using Selective Mutation Operators over 30 runs, and applied Mann-Whitney-Wilcoxon \emph{U}-test on the HyperVolume. For subject \emph{espresso} and \emph{gawk}, the difference between HOMs (all) and HOMs (Selective) are significant ($p<0.01$) with a large effect size ($A_{12} > 0.9$), while for the other two subjects, the difference is not significant.
+%Furthermore, there is an improvement when Memory Mutation Operators %are included on subject \emph{espresso} and \emph{gawk}, while %there is not much difference between these Pareto fronts on the other %subjects.
+To statistically demonstrate the difference, we calculated the HyperVolume~\cite{797969} of the Pareto fronts of \homsa{} and \homss{} over 30 runs, and applied Mann-Whitney-Wilcoxon \emph{U}-test on the HyperVolume metric for these Pareto fronts. For subject \emph{espresso} and \emph{gawk}, the difference between HOMs (all) and HOMs (Selective) are significant ($p<0.01$) with a large effect size ($A_{12} > 0.9$), while for the other two subjects, the difference is not significant.
 
 \begin{figure}[ht]
 	\centering
@@ -493,7 +493,7 @@ To statistically demonstrate the difference, we calculated the HyperVolume~\cite
 		\scalebox{1}{\includegraphics[width=0.47\textwidth]{pareto_sed}}
 	}
 	\vspace{-1em}
-	\caption{Pareto Fronts of GI-HOMs and GI-FOMs for each subject. Lower and lefthand solutions dominate high and righthand solutions.}\label{fig_pareto}
+	\caption{Pareto fronts of GI-HOMs and GI-FOMs for each subject. Lower and lefthand solutions dominate high and righthand solutions.}\label{fig_pareto}
 \end{figure}
 
 In summary, the answer to RQ2 is that GI-HOMs can improve the time performance by up to 18.2\% or the memory performance by up to 19.7\%. For the GI-HOMs using Selective Mutation Operators only, we found the same upper bound of the improvement, but only achieved sub-optimal solutions on two subjects.
@@ -504,10 +504,10 @@ Therefore, we can conclude that Memory Mutation Operators provide further improv
 \label{sec_resstatic}
 
 
-This RQ investigates whether the granularity of mutation changes can also be generated by the `plastic surgery' GP approach. To answer this question, we investigated the GI-HOMs found in all experiments and manually reproduce them following the evolution rules used in the line/statement based `plastic surgery' GP approach \cite{justyna2013, 6733370}. All together HOMI found  273 mutations in the improved GI-HOMs across all subjects. We first applied a simple hill-climbing algorithm to clean up the mutations that do not contribute to the improvement. This step narrowed the number of mutations down to 141. %We then manually examined these mutations, and filtered out are in total 108 unique mutation changes.  (the same mutations may be found in several GI-HOMs).
+This RQ investigates whether the granularity of mutation changes can also be generated by the `plastic surgery' GP approach. To answer this question, we investigated the GI-HOMs found in all experiments and manually reproduce them following the evolution rules used in the line/statement based `plastic surgery' GP approach~\cite{justyna2013, 6733370}. All together HOMI found  273 mutations in the improved GI-HOMs across all subjects. We first applied a simple hill-climbing algorithm to clean up the mutations that do not contribute to the improvement. This step narrowed the number of mutations down to 141. %We then manually examined these mutations, and filtered out are in total 108 unique mutation changes.  (the same mutations may be found in several GI-HOMs).
 In total, there are 108 unique mutations identified (the same mutations may be found in several GI-HOMs).
 
-For each of the unique mutation changes, we search the entire program to see if the mutated line/statement exists in the program.  Because the typical changes generated by the `plastic surgery' GP approach are movements or replacements of different lines of code \cite{justyna2013, 6733370}, if a mutation does not appear somewhere else in the original source code, it cannot be generated directly from this form of GP approaches. The result shows that 95 (88\%) out of 108 mutations cannot be found in the original source code. Therefore, the answer to RQ3 is, there are 108 unique mutational changes found in the GI-HOMs, 88\% of which cannot be generated from the line based `plastic surgery' GP approach directly.
+For each of the unique mutation changes, we search the entire program to see if the mutated line/statement exists in the program.  Because the typical changes generated by the `plastic surgery' GP approach are movements or replacements of different lines of code~\cite{justyna2013, 6733370}, if a mutation does not appear somewhere else in the original source code, it cannot be generated directly from this form of GP approaches. The result shows that 95 (88\%) out of 108 mutations cannot be found in the original source code. Therefore, the answer to RQ3 is, there are 108 unique mutational changes found in the GI-HOMs, 88\% of which cannot be generated from the line-based `plastic surgery' GP approach directly.
 
 %To investigate whether those mutational changes can be generated from patch-based approaches, we investigated the mutants non-dominated by any other mutants in all experiments, and searched for their mutational changes in the original source code.
 %We found there are 273 mutations among those mutants across all subjects.
@@ -525,14 +525,13 @@ In the last Research Question, we want to understand whether the improvement can
 To answer this question, we contacted the authors of the Deep Parameter Optimisation work to obtain a set of memory allocation libraries that were optimised for the time and memory performance for each subject. We created four new optimised version of each subject by linking the most time/memory-saving GI-HOMs and libraries in pairwise.
 
 
-
 The results are reported in \tablename~\ref{tab_deep}.
 In the table, rows represent HOMI-improved programs and columns represent Deep-Parameter-optimised libraries, where `Original' indicates the original program or library, `T' indicates it is the most time-saving ones and 'M' indicates the most memory-saving ones.
 All of the numbers are the improvement in percentage compared with the original version.
 %specially, the combination of original program and original library is always 0\% improvement on either performance.
-If in a combination (that does not involve the Original program/library), the time/memory performance is not worse than that of any of the `ingredient' program/library, it is highlighted in the bold font.
-On the other hand, all the underlined performance are the ones that are worse than both of the `ingredient' program and library.
-For subject \emph{sed}, there is only one GI-HOM on the Pareto Front, thus it is both the most time and memory-saving program.
+If in a combination (that does not involve the Original program/library), the time/memory performance is not worse than that of any of the `ingredient' program/library, it is highlighted in bold font.
+On the other hand, all the underlined performances are the ones that are worse than both of the `ingredient' program and library.
+For subject \emph{sed}, there is only one GI-HOM on the Pareto front, thus it is both the most time and memory-saving program.
 
 % choose one table from:
 \vspace{-4mm}
@@ -614,7 +613,7 @@ This possible synergy, if there is any, requires a much larger search space, thu
 To make the HOMI approach scalable, we confine the search on the most sensitive locations, making the search more effective.
 Furthermore, we make the ratio of sensitive locations a parameter of our approach, such that it can be adapted to trade between exploration and exploitation.
 
-Another threat to validity comes from the measurement of time and memory performance. We applied the measurement approach proposed by Wu et al. \cite{Wu:2015:DPO:2739480.2754648}. 
+Another threat to validity comes from the measurement of time and memory performance. We applied the measurement approach proposed by Wu et al.~\cite{Wu:2015:DPO:2739480.2754648}. 
 To make the measurement accurate, we use CPU time and use the mean of 10 measurements to minimise the noise.
 For memory consumption, we instrument the memory management library to calculate the exact use of virtual memory.
 Therefore, the measurement noise is minimised.
@@ -624,11 +623,11 @@ Therefore, the measurement noise is minimised.
 
 The approach can be easily applied to other subjects, but the conclusion may not generalise to larger scale systems.
 We use four subjects with varying sizes from 5,000 to 45,000 lines of code, and the results are consistent across all subjects.
-Therefore, we have confidence that the results can be generalised to larger scale systems, and the threat is mitigated.
+Therefore, we have confidence that the results may likely be generalised to larger scale systems, and the threat is thereby ameliorated.
 
 We adopt Memory Mutation Operators in our approach because we are interested in time and memory performance.
 However, the same set of Mutation Operators does not necessarily lead to similar results when other software qualities are concerned.
-Since the selection of Mutation Operators is independent of the other parts of the approach, the selection of Mutation Operators can be easily adapted accordingly, thus, the threat is minimised.
+Since the selection of Mutation Operators is independent of the other parts of the approach, the choices of Mutation Operators can be easily adapted accordingly, thereby minimising this threat.
 
 \section{Related Work}
 \label{sec_related}
@@ -658,8 +657,8 @@ Our result suggests that 88\% of those mutational changes cannot be composed of 
 \section{Conclusion}
 \label{sec_conclusion}
 \vspace{-2mm}
-In this paper, we have introduced, HOMI, a search based higher order mutation approach to GI. HOMI uses mutation operators to automatically modify subject programs at a finer granularity. With multi-objective search algorithm, HOMI found GI-HOMs that improve subject programs by 18.2\% on time performance or 19.7\% on memory consumption without breaking any regression tests. In our empirical study, we also find that by including Memory Mutation Operators, HOMI can find GI-HOMs achieving better performance than using just traditional Selective Mutation Operators on two subjects.
-Furthermore, we find that 88\% of the mutational changes in those GI-HOMs cannot be generated from the popular line based `plastic surgery' GP approach. Finally, by combining GI-HOMs with Deep-Parameter-optimised memory management libraries, we found further improvement than GI-HOMs or optimised libraries alone, which motivates a future research direction that searches and optimises GI-HOMs and Deep Parameters altogether.
+In this paper, we have introduced, HOMI, a search-based higher order mutation approach to GI. HOMI uses mutation operators to automatically modify subject programs at a finer granularity. Using a multi-objective search algorithm, HOMI found GI-HOMs that improve subject programs by 18.2\% on time performance or 19.7\% on memory consumption without breaking any regression tests. In our empirical study, we also find that by including Memory Mutation Operators, HOMI can find GI-HOMs that achieve better performance than using just traditional Selective Mutation Operators on two subjects.
+Furthermore, we find that 88\% of the mutational changes in our GI-HOMs cannot be generated from the currently widely-used line based `plastic surgery' GP approach. Finally, by combining GI-HOMs with Deep-Parameter-optimised memory management libraries, we found further improvement than GI-HOMs or optimised libraries alone could achieve, which motivates a future research direction that searches and optimises GI-HOMs and Deep Parameters altogether.
 
 %We use Mutation Operators to automatically modify subject programs in a finer granularity than recent patch-based approaches.
 %By searching for HOMs, we find that the subject programs can be improved by 18.2\% on time performance or 19.7\% on memory consumption, while the functionality is preserved by using regression tests.
